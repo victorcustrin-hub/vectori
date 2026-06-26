@@ -19,4 +19,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="exercitiiVectori.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tema2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
