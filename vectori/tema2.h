@@ -6,7 +6,7 @@ using namespace std;
 //intrebari:1e
 
 bool prim(int n) {
-	if (n == 0 || n == 1) {
+	if (n<=1) {
 		return false;
 	}
 	for (int k = 2;k <= n / 2;k++) {
@@ -277,5 +277,71 @@ void solutie1f() {
 		}
 	}
 
-	cout << "Suma numerelor din a 3/4 parte cu nr. egal de 0 si 1 este: " << s << endl;
+	cout << s << endl;
+}
+
+int cifControl(int n) {
+	int rest = n % 9;
+	return (rest == 0) ? 9 : rest;
+}
+
+int produsCif(int n) {
+	int p = 1;
+
+	while (n != 0) {
+		int cif = n % 10;
+		p = p * cif;
+		n = n / 10;
+	}
+	return p;
+
+
+}
+
+void solutie1g() {
+	int v[8] = { 51, 12, 72, 31, 130, 29, 81, 21 };
+	int d = 8;
+
+
+	for (int i = 0; i < d; i++) {
+		if (cifControl(v[i])%2==0) {
+			int p=produsCif(v[i]);
+			cout << "nr " << v[i] << " cu cifra de control " << cifControl(v[i]) << " are produsul cifrelor " << p << endl;
+		}
+	}
+
+
+}
+
+bool superprim(int n) {
+	int pozitie = 0;
+	if (prim(n) == false) {
+		return false;
+	}
+	for (int i = 2; i <= n; i++) {
+		if (prim(i)) {
+			pozitie++;
+		}
+	}
+
+	if (prim(pozitie)) {
+		return true;
+	}
+	return false;
+}
+
+void solutie1h() {
+	int v[8] = { 11, 4, 17, 9, 3, 12, 5 };
+	int d = 7;
+
+
+	for (int i = d - 1; i >= 0; i--) {
+		if (superprim(v[i])) {
+			cout << v[i] << " ";
+
+		}
+
+	}
+
+	cout << endl;
 }

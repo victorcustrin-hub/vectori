@@ -3,5 +3,5 @@
 using namespace std;
 
 int main() {
-	solutie1f();
+	solutie1h();
 }
