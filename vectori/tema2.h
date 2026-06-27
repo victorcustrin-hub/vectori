@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-//intrebari:1e
+//intrebari:1e,2b
 
 bool prim(int n) {
 	if (n<=1) {
@@ -55,9 +55,6 @@ int cifMax(int n) {
 
 int cifMin(int n) {
 	int min = 10;
-	if (n == 0) {
-		return 0;
-	}
 	n = abs(n);
 	while (n != 0) {
 		int cif = n % 10;
@@ -344,4 +341,116 @@ void solutie1h() {
 	}
 
 	cout << endl;
+}
+
+
+int cifraMin(int n) {
+	int min = 10;
+	while (n != 0) {
+		int cif = n % 10;
+		if (cif < min) {
+			min = cif;
+		}
+		n = n / 10;
+	}
+	return min;
+}
+
+void solutie2a() {
+	int v[300] = { 45,634,234,876,23 };
+	int d = 5;
+	int minGlobal = 10;
+
+	for (int i = 0;i < d;i++) {
+		int minim = cifraMin(v[i]);
+		if (minim < minGlobal) {
+			minGlobal = minim;
+		}
+	}
+	cout << "cea mai mica cifra globala=" << minGlobal << endl;
+	cout << "numerele din vector care contin aceasta cifra sunt:";
+	for (int i = 0; i < d; i++) {
+		if (cifraMin(v[i]) == minGlobal) {
+			cout << v[i] << " ";
+		}
+	}
+	cout << endl;
+
+}
+
+bool palindrom(int n) {
+	int nou = 0;
+	int x = n;
+	while (n != 0) {
+		int cif = n % 10;
+		nou = nou * 10 + cif;
+		n = n / 10;
+	}
+
+	if (x == nou) {
+		return true;
+	}
+	return false;
+}
+
+
+// copie != 0       nrCif       copie
+// 141 != 0 da      1           14
+// 14 != 0 da       2           1
+// 1 != 0 da        3           0
+// 0 != 0 nu
+
+// i < pasi         n 
+// i = 0 < 1 da     14
+// i = 1 < 1 nu
+
+// cifraMijl = 14 % 10 = 4
+bool mijlocPatratPerfect(int n) {
+	int copie = n;
+	int nrCif = 0;
+
+	while (copie != 0) {
+		nrCif++;
+		copie = copie / 10;
+	}
+
+	int pasi = (nrCif - 1) / 2;
+	for (int i = 0; i < pasi; i++) {
+		n =n/ 10;
+	}
+
+	int cifraMijloc = n % 10;
+
+	if (cifraMijloc == 0 || cifraMijloc == 1 || cifraMijloc == 4 || cifraMijloc == 9) {
+		return true;
+	}
+	return false;
+}
+
+void solutie2b() {
+	int v[300] = { 141, 634, 5995, 876, 23 };
+	int d = 5;
+
+	for (int i = d - 1; i >= 0; i--) {
+		if (palindrom(v[i])&&mijlocPatratPerfect(v[i])) {
+			cout << v[i] << " ";
+		}
+
+	}
+	cout << endl;
+
+}
+
+void solutie2c() {
+	int v[300] = { 141, 634, 5995, 876, 23 };
+	int d = 5;
+	int p = 1;
+	int nou = 0;
+	for (int i = d-1; i >=0 ; i--) {
+		int min = cifraMin(v[i]);
+	    nou = min * p + nou;
+		p = p * 10;
+	}
+	cout << nou << endl;
+
 }
