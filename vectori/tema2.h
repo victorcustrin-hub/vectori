@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-//intrebari:1e,2b,2d
+//intrebari:1e,2b,2d,3a,3b,3c,3e,3f
 
 bool prim(int n) {
 	if (n<=1) {
@@ -487,4 +487,172 @@ void solutie2d() {
 
 	consecutiv ? cout << "Toate nr din vector au cifre consecutive" << endl : cout << "Cifrele din nr vectorului nu sunt consecutive" << endl;
    
+}
+
+
+void solutie3a() {
+	int m = 0;
+	int ct = 1;
+	cout << "m=";
+	cin >> m;
+	cout << "Introduceti " << m << " numere cu valori intre 200-300 sau 2000-3000." << endl;
+
+	while (m != 0) {
+		int x = 0;
+		cout << "nr" << ct << "=";
+		cin >> x;
+
+
+
+
+		ct++;
+		m--;
+	}
+	cout << endl;
+}
+
+bool patratPerfect(int n) {
+	int radacina = sqrt(n);
+
+	if (radacina * radacina == n) {
+		return true;
+	}
+	return false;
+}
+
+void solutie3b() {
+	int v[300] = { 123, 45, 789, 2345, 67 };
+	int d = 5;
+
+	for (int i = 0; i < d; i++) {
+		if (i != d - 1 && patratPerfect(v[i]) == false && v[i] % 2 == v[i + 1] % 2) {
+			int desc = 0;//descompunere factori primi?
+		}
+	}
+
+	
+
+}
+
+void solutie3c() {
+	int v[300] = { 123, 456, 77, 777, 200, 201, 202 };
+	int d = 7;
+	int s = d / 7;
+	int start = s;
+	int end= 2 * s - 1;
+	bool egal= true;
+	int primulnr = v[start];
+	int copiecif = primulnr % 10;
+
+	for (int i = start; i <= end; i++) {
+		int n = v[i];
+
+		
+		while (n > 0) {
+			int cif = n % 10;
+			if (cif != copiecif) {
+				egal = false;
+				break;
+			}
+			n = n / 10;
+		}
+
+		if (egal == false) {
+			break;
+		}
+	}
+
+	
+	egal ? cout << "cifrele din a doua septime sunt egale" << endl : cout << "cifrele din a doua septime nu sunt egale" << endl;
+}
+
+int par(int n) {
+	int nou = 0;
+	int p = 1;
+
+	while (n != 0) {
+		int cif = n % 10;
+		if (cif % 2 != 0) {
+			nou = cif * p + nou;
+			p = p * 10;
+		}
+
+		n = n / 10;
+	}
+
+	return nou;
+
+
+}
+
+int div3(int n) {
+	int nou = 0;
+	int p = 1;
+
+	while (n != 0) {
+		int cif = n % 10;
+		if (cif % 3 != 0) {
+			nou = cif * p + nou;
+			p = p * 10;
+		}
+
+		n = n / 10;
+	}
+
+	return nou;
+
+
+}
+
+
+void solutie3d() {
+	int v[300] = { 332,5463,41,76,12,54 };
+	int d = 5;
+
+	for (int i = 0; i < d; i++) {
+		int x = div3(par(v[i]));
+		if (x != 0) {
+			cout << x << " ";
+		}
+
+	
+	}
+}
+
+bool primx(int n) {
+	if (n <= 1) {
+		return false;
+	}
+	for (int k = 2;k <= n / 2;k++) {
+		if (n % k == 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+void solutie3e() {
+	int v[300] = { 5, 2, 12, 7, 5 };
+	int d = 5;
+	int ct = 0;
+
+	for (int i = 0; i < d; i++) {
+		int poz = i + 1;
+
+		if (primx(v[i])) {
+			ct++;
+		}
+	}
+
+	cout << "nr de elemente care respecta conditia este: " << ct << endl;
+}
+
+int cmmmc(int a,int b) {
+
+
+	if (a == 0 || b == 0) return 0;
+	return (a * b) / (a, b);
+
+
 }
