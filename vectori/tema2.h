@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-//intrebari:1e,2b
+//intrebari:1e,2b,2d
 
 bool prim(int n) {
 	if (n<=1) {
@@ -453,4 +453,38 @@ void solutie2c() {
 	}
 	cout << nou << endl;
 
+}
+// n > 9          cif            cif2         n 
+// 456 > 9 da     6               5           45
+// 45 > 9 da      5               4           4
+// 4 > 9 nu
+bool consec(int n) {
+
+	while (n > 9) {
+		int cif = n % 10;
+		int cif2 = n / 10 % 10;
+
+		if (cif != cif2 + 1) {
+			return false;
+		}
+		n = n / 10;
+	}
+	return true;
+}
+
+void solutie2d() {
+	int v[300] = { 123, 45, 789, 2345, 67 };
+	int d = 5;
+
+	bool consecutiv = true;
+
+	for (int i = 0; i < d; i++) {
+		if (consec(v[i]) == false) {
+			consecutiv = false;
+			break;
+		}
+	}
+
+	consecutiv ? cout << "Toate nr din vector au cifre consecutive" << endl : cout << "Cifrele din nr vectorului nu sunt consecutive" << endl;
+   
 }
