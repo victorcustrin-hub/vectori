@@ -118,3 +118,4 @@ void solutie4() {
 		cout << v[i] << " ";
 	}
 }
+

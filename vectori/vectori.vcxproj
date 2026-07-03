@@ -142,8 +142,11 @@
     <ClCompile Include="vectori.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="corectareTema2.h" />
     <ClInclude Include="exercitiiVectori.h" />
+    <ClInclude Include="sortareaVectorilor.h" />
     <ClInclude Include="tema2.h" />
+    <ClInclude Include="tema3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

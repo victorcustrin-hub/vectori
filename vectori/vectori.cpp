@@ -1,7 +1,10 @@
 #include <iostream>
-#include "tema2.h"
+#include "tema3.h"
 using namespace std;
 
 int main() {
-	solutie3e();
+
+	solutie511();
+
+
 }

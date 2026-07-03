@@ -26,5 +26,14 @@
     <ClInclude Include="tema2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="corectareTema2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sortareaVectorilor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tema3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
