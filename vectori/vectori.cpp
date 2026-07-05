@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
 
-	solutie185();
+	solutie2594();
 
 
 }

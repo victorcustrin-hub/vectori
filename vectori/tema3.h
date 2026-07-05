@@ -4,7 +4,6 @@
 using namespace std;
 //185
 
-
 //1
 void sortatPrinBubbleSortDescrescator(int v[], int d) {
 	bool sortat = true;
@@ -22,6 +21,23 @@ void sortatPrinBubbleSortDescrescator(int v[], int d) {
 	} while (sortat == false);
 }
 
+void afisare(int v[], int d) {
+
+	for (int i = 0;i < d;i++) {
+		cout << v[i] << " ";
+	}
+
+}
+
+void solutie129() {
+	int v[100] = { 8, 2, 9, 4, 5, 7 };
+	int d = 6;
+
+	sortatPrinBubbleSortDescrescator(v, d);
+	afisare(v, d);
+}
+
+//2
 void afisarediv10(int v[], int d) {
 
 	for (int i = 0;i < d;i++) {
@@ -47,7 +63,7 @@ void solutie4146() {
 //
 
 
-//2
+//3
 void sortatPrinBubbleSortInaltimi(int v[], int poz[], int d) {
 	bool sortat = true;
 	do {
@@ -71,13 +87,6 @@ void sortatPrinBubbleSortInaltimi(int v[], int poz[], int d) {
 	} while (sortat == false);
 }
 
-void afisare(int v[], int d) {
-
-	for (int i = 0;i < d;i++) {
-		cout << v[i] << " ";
-	}
-
-}
 
 void solutie618() {
 	int v[100] = { 8, 20, 16, 14, 10, 4, 12 };
@@ -94,7 +103,7 @@ void solutie618() {
 }
 //
 
-//3
+//4
 int div(int n) {
 	int ct = 0;
 	for (int i = 1;i <= n;i++) {
@@ -142,7 +151,7 @@ void solutie1608() {
 }
 //
 
-//4
+//5
 int cmmdc(int a, int b) {
 	while (b != 0) {
 		int r = a % b;
@@ -169,7 +178,7 @@ void solutie514() {
 }
 //
 
-//5
+//6
 void sortatCrescatorPartial(int v[], int start, int end) {
 	bool sortat = true;
 	do {
@@ -212,7 +221,7 @@ void solutie511() {
 }
 //
 
-//6
+//7
 void solutie512() {
 	int v[100] = { 13, 1, 10, 15, 3, 7, 11 };
 	int d = 7;
@@ -232,7 +241,7 @@ void solutie512() {
 }
 //
 
-//7
+//8
 void solutie180() {
 	int v[100] = { 10, 20, 15, 7, 12 };
 	int d = 5;
@@ -263,7 +272,7 @@ void solutie180() {
 //
 
 
-//8
+//9
 bool patratPerfect(int n) {
 
 	return sqrt(n) == (int)sqrt(n);
@@ -295,7 +304,7 @@ void solutie183() {
 }
 //
 
-//9
+//10
 int div2(int n) {
 	int s = 0;
 
@@ -335,7 +344,7 @@ void solutie515() {
 }
 //
 
-//10
+//11
 int primaCif(int n) {
 
 	while (n > 9) {
@@ -376,3 +385,161 @@ void solutie185() {
 
 }
 //
+
+//12
+int cifMin(int n) {
+	if (n == 0) {
+		return 0;
+	}
+	int min = 10;
+	while (n != 0) {
+		int cif = n % 10;
+		if (cif < min) {
+			min = cif;
+		}
+		n = n / 10;
+	}
+	return min;
+}
+
+void solutie186() {
+	int v[100] = { 100, 312, 276, 985, 5021 };
+	int d = 5;
+	int cif[100];
+
+	for (int i = 0; i < d; i++) {
+		cif[i] = cifMin(v[i]);
+	}
+	BubbleSortCrescator(cif, d);
+
+	if (cif[0] == 0) {
+		int poz = 0;
+		for (int i = 0; i < d; i++) {
+			if (cif[i] != 0) {
+				poz = i;
+				break;
+			}
+		}
+
+		int aux = cif[0];
+		cif[0] = cif[poz];
+		cif[poz] = aux;
+	}
+
+	for (int i = 0; i < d; i++) {
+		cout << cif[i];
+	}
+
+}
+//
+
+//13
+void solutie86() {
+	int v[100] = { 8, 2, 9, 4, 5, 7 };
+	int d = 6;
+	int mijloc = d / 2;
+    
+	sortatCrescatorPartial(v, 0, mijloc - 1);
+	sortatDescrescatorPartial(v, mijloc, d - 1);
+	afisare(v,d);
+
+}
+
+//14
+int suma(int n) {
+	int sum = 0;
+	while (n != 0) {
+		int cif = n % 10;
+		sum = sum + cif;
+		n = n / 10;
+	}
+
+	return sum;
+}
+
+void sortatCrescatorSuma(int v[], int d) {
+
+	bool sortat = true;
+	do {
+		sortat = true;
+
+		for (int i = 0;i < d - 1;i++) {
+
+			if (suma(v[i]) > suma(v[i + 1])) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+
+		}
+
+	} while (sortat == false);
+}
+
+void solutie130() {
+	int v[100] = { 89, 22, 91, 4005, 51, 721 };
+	int d = 6;
+
+	sortatCrescatorSuma(v, d);
+	afisare(v, d);
+
+
+
+
+}
+//
+
+
+
+
+//15
+
+
+
+
+void sortatCrescator(int v[], int d) {
+
+	bool sortat = true;
+	do {
+		sortat = true;
+
+		for (int i = 0;i < d - 1;i++) {
+
+			if (v[i] > v[i + 1]) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+
+		}
+
+	} while (sortat == false);
+}
+void solutie2594() {
+	int v[100] = { 5, 4, 3, 2, 1, 6, 7, 8, 9, 18 };
+	int d = 10;
+	int par[100];
+	int imp[100];
+	int ctpar = 0; 
+	int ctimp = 0;
+
+	for (int i = 0; i < d; i++) {
+
+		if (v[i] % 2 == 0) {
+			par[ctpar] = v[i];
+			ctpar++;
+		}
+		else {
+			imp[ctimp] = v[i];
+			ctimp++;
+		}
+	}
+
+	BubbleSortCrescator(par, ctpar);
+	BubbleSortCrescator(imp, ctimp);
+	afisare(par,ctpar);
+	afisare(imp, ctimp);
+
+}
