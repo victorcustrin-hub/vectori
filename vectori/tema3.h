@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 using namespace std;
-//185,4102,4106
+//185,4102,4106,1911
 
 //1
 void sortatPrinBubbleSortDescrescator(int v[], int d) {

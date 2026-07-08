@@ -1,10 +1,9 @@
 #include <iostream>
-#include "tema3.h"
+#include "realizareaUnuiNouVector.h"
 using namespace std;
 
 int main() {
 
-	solutie1911();
-
+    cout << superprim(41);
 
 }

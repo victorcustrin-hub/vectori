@@ -108,3 +108,6 @@ void solutie510() {
 	sortatPrinBubbleSort(aux,ct);
 	afisare(v, d);
 }
+
+
+

@@ -144,6 +144,8 @@
   <ItemGroup>
     <ClInclude Include="corectareTema2.h" />
     <ClInclude Include="exercitiiVectori.h" />
+    <ClInclude Include="MunteVale.h" />
+    <ClInclude Include="realizareaUnuiNouVector.h" />
     <ClInclude Include="sortareaVectorilor.h" />
     <ClInclude Include="tema2.h" />
     <ClInclude Include="tema3.h" />

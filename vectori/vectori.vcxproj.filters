@@ -35,5 +35,11 @@
     <ClInclude Include="tema3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MunteVale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="realizareaUnuiNouVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
