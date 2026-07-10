@@ -4,6 +4,6 @@ using namespace std;
 
 int main() {
 
-    cout << superprim(41);
+	solutie2e();
 
 }
