@@ -3,6 +3,7 @@
 #include <cmath>
 using namespace std;
 
+//3e
 
 int sumaCifrelor(int n) {
 	int s = 0;
@@ -442,3 +443,253 @@ void solutie2e() {
 
 	afisare(nou, ct);
 }
+//
+
+//f
+int alipire(int a, int b) {
+	int aux = b;
+	int p = 1;
+
+	while (aux != 0) {
+		p = p * 10;
+		aux=aux / 10;
+	}
+
+	return a * p + b;
+}
+
+void solutie2f() {
+	int v[100] = { 12, 1234, 34, 5, 35, 3 };
+	int d = 6;
+	int ct = 0;
+
+	for (int i = 0; i < d - 2; i++) {
+		int nr1 = v[i];
+		int nr2 = v[i + 1];
+		int nr3 = v[i + 2];
+
+		int nrAlipit = alipire(nr1, nr3);
+
+		if (nrAlipit == nr2 || nrAlipit == ogl(nr2)) {
+			ct++;
+		}
+	}
+	cout << ct;
+}
+//
+
+//g
+void solutie2g() {
+	int v[100] = { 121, 45, 77, 123, 9 };
+	int d = 5;
+	int nou[100];
+	int ct = 0;
+
+	for (int i = 0; i < d; i++) {
+		if (palindrom(v[i])) {
+			nou[ct] = v[i];
+			ct++;
+		}
+	}
+
+	afisare(nou, ct);
+
+}
+//
+
+//EXERCITIUL 3
+
+//a
+int minim(int v[],int d) {
+	 int min = 9999;
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] < min) {
+			min = v[i];
+		}
+	}
+	
+	return min;
+
+}
+
+int maxim(int v[], int d) {
+	int max = -9999;
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] > max) {
+			max = v[i];
+		}
+	}
+
+	return max;
+
+}
+
+void solutie3a() {
+	int v[250] = { 121, 45, 77, 123, 9 };
+	int d = 5;
+	int min = minim(v, d);
+	int max = maxim(v, d);
+	int rez = cmmdc(min, max);
+
+	cout << rez << endl;
+
+
+
+}
+//
+
+//b
+int cmmdcNrPareDinVector(int v[], int d) {
+	int rez = 0;
+
+	for (int i = 0; i < d; i = i + 2) {
+		if (v[i] % 2 == 0) {
+			if (rez == 0) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmdc(rez, v[i]);
+			}
+		}
+	}
+	return rez;
+}
+
+
+void solutie3b() {
+	int v[250] = { 12, 8, 24, 15, 36 };
+	int d = 5;
+	int rez = cmmdcNrPareDinVector(v,d);
+	cout << rez << endl;
+
+}
+//
+
+//c
+int parcursADouaTreime(int v[], int start, int finish) {
+	int rez = 0;
+
+	for (int i = start; i < finish; i++) {
+		if (prim(v[i])) {
+			if (rez == 0) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmdc(rez, v[i]);
+			}
+		}
+	}
+	return rez;
+}
+
+void solutie3c() {
+	int v[200] = { 4, 10, 8, 7, 12, 13, 20, 11, 15 };
+	int d = 9;
+	int start = d / 3;
+	int finish = 2 * d / 3;
+	int rez = parcursADouaTreime(v, start, finish);
+	cout << rez;
+}
+//
+
+//d
+bool crescator(int n) {
+	int cif = n % 10;
+	n = n / 10;
+
+	while (n != 0) {
+		int cif2 = n % 10;
+		if (cif2 > cif) {
+			return false;
+		}
+
+		cif = cif2;
+		n = n / 10;
+	}
+
+	return true;
+
+
+}
+
+void solutie3d() {
+	int v[250] = { 12, 8, 24, 15, 36 };
+	int d = 5;
+	int rez = 0;
+
+	for (int i = 0; i < d; i++) {
+		if (crescator(v[i])) {
+			if (rez == 0) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmdc(rez, v[i]);
+			}
+		}
+	}
+
+	cout << rez;
+
+}
+//
+
+//e
+int baza2(int n) {
+	int ct = 0;
+
+	while (n != 0) {
+
+		if (n % 2 == 1) {
+			ct++;
+		}
+		n = n / 2;
+	}
+	return ct;
+}
+
+void solutie3e() {
+	int v[250] = { 12, 8, 24, 15, 36 };
+	int d = 5;
+	int rez = 0;
+
+	for (int i = 0;i < d;i++) {
+		int b2 = baza2(v[i]);
+
+		if (b2 > 2) {
+			if (rez == 0) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmdc(rez, v[i]);
+			}
+		}
+	}
+
+
+	cout << rez;
+
+}
+//
+
+//f
+void solutie3f() {
+	int v[250] = {42, 15, 33, 20};
+	int d = 4;
+	int rez = 0;
+
+	for (int i = 0; i < d; i++) {
+		if (cifControl(v[i]) == 6) {
+			if (rez == 0) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmdc(rez, v[i]);
+			}
+		}
+	}
+
+	cout << rez << endl;
+}
+//

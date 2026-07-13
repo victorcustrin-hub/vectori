@@ -4,6 +4,6 @@ using namespace std;
 
 int main() {
 
-	solutie2e();
+	solutie3f();
 
 }
