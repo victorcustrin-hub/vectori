@@ -500,10 +500,13 @@ void solutie2g() {
 //EXERCITIUL 3
 
 //a
+//incorect
 int minim(int v[],int d) {
 	 int min = 9999;
 
+
 	for (int i = 0;i < d;i++) {
+		v[i] = abs(v[i]);
 		if (v[i] < min) {
 			min = v[i];
 		}
@@ -517,6 +520,7 @@ int maxim(int v[], int d) {
 	int max = -9999;
 
 	for (int i = 0;i < d;i++) {
+		v[i] = abs(v[i]);
 		if (v[i] > max) {
 			max = v[i];
 		}
@@ -527,8 +531,8 @@ int maxim(int v[], int d) {
 }
 
 void solutie3a() {
-	int v[250] = { 121, 45, 77, 123, 9 };
-	int d = 5;
+	int v[250] = { -15, -5, 0, 35, 45, 25 };
+	int d = 6;
 	int min = minim(v, d);
 	int max = maxim(v, d);
 	int rez = cmmdc(min, max);
@@ -559,8 +563,8 @@ int cmmdcNrPareDinVector(int v[], int d) {
 
 
 void solutie3b() {
-	int v[250] = { 12, 8, 24, 15, 36 };
-	int d = 5;
+	int v[250] = { 3, 4, 5, 8, 7, 12 };
+	int d = 6;
 	int rez = cmmdcNrPareDinVector(v,d);
 	cout << rez << endl;
 
@@ -585,8 +589,8 @@ int parcursADouaTreime(int v[], int start, int finish) {
 }
 
 void solutie3c() {
-	int v[200] = { 4, 10, 8, 7, 12, 13, 20, 11, 15 };
-	int d = 9;
+	int v[200] = { 2, 3, 4, 6, 7, 11 };
+	int d = 6;
 	int start = d / 3;
 	int finish = 2 * d / 3;
 	int rez = parcursADouaTreime(v, start, finish);
@@ -614,9 +618,10 @@ bool crescator(int n) {
 
 }
 
+//gresit
 void solutie3d() {
-	int v[250] = { 12, 8, 24, 15, 36 };
-	int d = 5;
+	int v[250] = { 135, 246, 357 };
+	int d = 2;
 	int rez = 0;
 
 	for (int i = 0; i < d; i++) {
@@ -693,3 +698,98 @@ void solutie3f() {
 	cout << rez << endl;
 }
 //
+
+
+//CORECTAREA TEMEI
+
+//3 e) care este cmmdc-ul tuturor elementelor ce au mai mult de 2 de 1 dupa conversia lor in baza 2?
+
+int nrInbaza2(int n) {
+	int nou = 0;
+	int p = 1;
+
+	while (n != 0) {
+		int cif = n % 2;
+		nou = cif * p + nou;
+		p = p * 10;
+		n = n / 2;
+	}
+
+	return nou;
+
+}
+
+//functie ce  contorizeaza numarul de apaitii a unei cifre in numar
+
+int verificareNrCifrelor(int n, int x) {
+	int ct = 0;
+
+	while (n != 0) {
+		int cif = n % 10;
+		if (cif == x) {
+			ct++;
+		}
+		n = n / 10;
+
+	}
+	return ct;
+}
+
+void solutieEx3e() {
+	int v[100] = { 112, 176, 240 };
+	int d = 3;
+	int rez = 0;
+
+	for (int i = 0;i < d;i++) {
+		int x = nrInbaza2(v[i]);
+		if (verificareNrCifrelor(x,1)>2) {
+			if (rez == 0) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmdc(rez,v[i]);
+			}
+		}
+
+	}
+
+	cout << rez << endl;
+
+}
+
+//EX3,a
+//realizati cmmdc-ul dintre elekentul minim si elementul maxiim
+
+int min(int v[], int d) {
+	long long int minim = 999999;
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] < minim) {
+			minim = v[i];
+		}
+	}
+	minim = abs(minim);
+	return minim;
+
+}
+
+int max(int v[], int d) {
+	long long int maxim = -999999;
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] > maxim) {
+			maxim = v[i];
+		}
+	}
+	
+	return maxim;
+}
+
+void solutieEx3a() {
+	int v[100] = { -15, -5, 0, 35, 45, 25 };
+	int d = 6;
+	int nrMin = min(v, d);
+	int nrMax = max(v, d);
+	int rez = cmmdc(nrMin, nrMax);
+	cout << rez;
+}
