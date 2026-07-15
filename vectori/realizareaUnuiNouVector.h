@@ -759,7 +759,6 @@ void solutieEx3e() {
 
 //EX3,a
 //realizati cmmdc-ul dintre elekentul minim si elementul maxiim
-
 int min(int v[], int d) {
 	long long int minim = 999999;
 

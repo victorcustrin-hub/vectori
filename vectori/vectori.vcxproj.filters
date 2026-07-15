@@ -41,5 +41,8 @@
     <ClInclude Include="realizareaUnuiNouVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dublete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

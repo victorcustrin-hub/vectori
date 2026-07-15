@@ -1,9 +1,8 @@
 #include <iostream>
-#include "realizareaUnuiNouVector.h"
+#include "dublete.h"
 using namespace std;
 
 int main() {
 
-	solutieEx3a();
-
+	solutie1a();
 }

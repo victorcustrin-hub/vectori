@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="corectareTema2.h" />
+    <ClInclude Include="dublete.h" />
     <ClInclude Include="exercitiiVectori.h" />
     <ClInclude Include="MunteVale.h" />
     <ClInclude Include="realizareaUnuiNouVector.h" />
