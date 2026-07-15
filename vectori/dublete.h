@@ -39,3 +39,40 @@ void solutie1a() {
 	cout << ct;
 
 }
+//
+
+//b Afisati toate dubletele care au acelasi nr de cifre
+
+int numarCifre(int n) {
+	int ct = 0;
+	n = abs(n);
+
+	if (n == 0) {
+		return 1;
+	}
+
+	while (n != 0) {
+		ct++;
+		n = n / 10;
+	}
+	return ct;
+}
+
+void solutie1b() {
+	int v[100] = { -5, 0, 44, -12, 100 };
+	int d = 5;
+
+	for (int i = 0;i < d - 1;i++) {
+		for (int j = i + 1;j < d;j++) {
+			int x = numarCifre(v[i]);
+			int y = numarCifre(v[j]);
+			
+			if (x == y) {
+				cout << v[i] << " " << v[j] << endl;
+			}
+
+		}
+	}
+}
+
+
