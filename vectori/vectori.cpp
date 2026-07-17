@@ -1,9 +1,9 @@
 #include <iostream>
-#include "stergere_inserare.h"
+#include "tema4.h"
 using namespace std;
 
 int main() {
 	
-	solutie1a();
+	solutie1f();
 
 }

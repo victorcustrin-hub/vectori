@@ -80,9 +80,6 @@ void solutie1a() {
 		if (ct == 3) {
 			poz = i;
 		}
-	}
-	cout << poz << endl;
-	cout << ct << endl;
 	stergereElement(v, d, poz);
 	afisare(v, d);
 }
