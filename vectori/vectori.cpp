@@ -4,5 +4,6 @@ using namespace std;
 
 int main() {
 
-	solutie1b();
+	solutie1c();
+
 }

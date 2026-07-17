@@ -75,4 +75,31 @@ void solutie1b() {
 	}
 }
 
+//c) alipiti toate perechile dublete de numere care au aceleasi cifre dar in ordine inversa
+int oglindit(int n) {
+	int ogl = 0;
+	while (n != 0) {
+		int cif = n % 10;
+		ogl = ogl * 10 + cif;
+		n = n / 10;
+	}
+
+	return ogl;
+}
+
+void solutie1c() {
+	int v[100] = { 11, 22, 11, 34, 43 };
+	int d = 5;
+
+	for (int i = 0;i < d - 1;i++) {
+		for (int j = i+1;j < d;j++) {
+			if (v[i] == oglindit(v[j])) {
+				cout << v[i] << v[j] << endl;
+			}
+		}
+	}
+}
+
+
+
 
