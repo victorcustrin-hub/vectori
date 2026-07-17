@@ -42,7 +42,6 @@ void solutie1a() {
 //
 
 //b Afisati toate dubletele care au acelasi nr de cifre
-
 int numarCifre(int n) {
 	int ct = 0;
 	n = abs(n);
@@ -100,6 +99,30 @@ void solutie1c() {
 	}
 }
 
+//d)sa se afiseze dubletele alaturate ce sunt palindrome intre ele
+bool palindrom(int n,int x) {
+	int nou = 0;
 
+	while (n != 0) {
+		int cif = n % 10;
+		nou = nou * 10 + cif;
+		n = n / 10;
+	}
 
+	if (nou == x) {
+		return true;
+   }
+	return false;
 
+}
+
+void solutie1d() {
+	int v[100] = { 12, 34, 56, 78 };
+	int d = 4;
+
+	for (int i = 0;i < d-1;i++) {
+		if (palindrom(v[i], v[i + 1])) {
+			cout << v[i] << " " << v[i + 1] << endl;
+		}
+	}
+}
