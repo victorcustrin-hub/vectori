@@ -148,6 +148,7 @@
     <ClInclude Include="MunteVale.h" />
     <ClInclude Include="realizareaUnuiNouVector.h" />
     <ClInclude Include="sortareaVectorilor.h" />
+    <ClInclude Include="stergere_inserare.h" />
     <ClInclude Include="tema2.h" />
     <ClInclude Include="tema3.h" />
   </ItemGroup>

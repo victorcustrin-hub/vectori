@@ -1,9 +1,8 @@
 #include <iostream>
-#include "dublete.h"
+#include "stergere_inserare.h"
 using namespace std;
 
 int main() {
-
-	solutie1d();
+	cout << prim(14);
 
 }

@@ -44,5 +44,8 @@
     <ClInclude Include="dublete.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stergere_inserare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
