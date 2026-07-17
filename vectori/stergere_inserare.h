@@ -51,7 +51,8 @@ void inserareElement(int v[], int& dim, int poz,int elem) {
 }
 
 //FISA
-
+//ex1
+//a)
 bool prim(int n) {
 	if(n <= 1) {
 		return false;
@@ -62,4 +63,26 @@ bool prim(int n) {
 		}
 	}
 	return true;
+}
+
+void solutie1a() {
+	int v[100] = { 34, 17, 85, 29, 93, 71, 13, 44, 47, 62 };
+	int d = 10;
+	int ct = 0;
+	int poz = -1;
+	
+
+	for (int i = 0;i < d&&poz==-1;i++) {
+		if (prim(v[i])) {
+			ct++;
+
+		}
+		if (ct == 3) {
+			poz = i;
+		}
+	}
+	cout << poz << endl;
+	cout << ct << endl;
+	stergereElement(v, d, poz);
+	afisare(v, d);
 }

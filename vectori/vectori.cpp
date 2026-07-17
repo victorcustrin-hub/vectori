@@ -3,6 +3,7 @@
 using namespace std;
 
 int main() {
-	cout << prim(14);
+	
+	solutie1a();
 
 }
