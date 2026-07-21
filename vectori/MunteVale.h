@@ -96,6 +96,10 @@ int deterPozitie1Ex1(int v[],int d) {
 			}
 		}
 	}
+
+	if (pozitie == -1) {
+		return 0;
+	}
 	return pozitie;
 }
 

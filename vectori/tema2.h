@@ -520,17 +520,46 @@ bool patratPerfect(int n) {
 	return false;
 }
 
-void solutie3b() {
-	int v[300] = { 123, 45, 789, 2345, 67 };
-	int d = 5;
 
-	for (int i = 0; i < d; i++) {
-		if (patratPerfect(v[i])==false&&v[i]%2==v[i+1]%2) {
-			int desc = 0;//descompunere factori primi?
+void descompunereFactoriPrimi(int n) {
+	cout << n << "=";
+	int aux = n;
+
+	for (int k = 2;k <= aux / 2;k++) {
+
+		if (prim(k) && n % k == 0) {
+			int ct = 0;
+			while (n % k == 0) {
+				ct++;
+				n = n / k;
+			}
+			cout << k << "^" << ct << "*";
 		}
+
 	}
 
-	
+	cout << "1";
+	cout << endl;
+}
+
+
+void solutie3b() {
+	int v[300] = { 12,24,27 };
+	int d = 3;
+
+	for (int i = 0;i < d;i++) {
+		if (i > 0 && i < d - 1) {
+			if (patratPerfect(v[i]) == false && v[i] % 2 == v[i - 1] % 2 && v[i - 1] % 2 == v[i + 1] % 2) {
+				descompunereFactoriPrimi(v[i]);
+			}
+		}
+		else {
+			if (patratPerfect(v[i]) == false) {
+				descompunereFactoriPrimi(v[i]);
+			}
+		}
+
+	}
 
 }
 

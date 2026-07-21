@@ -57,6 +57,7 @@ bool palindrom(int n) {
 
 //b
 int cmmdc(int a, int b) {
+
 	while (b != 0) {
 		int r = a % b;
 		a = b;
@@ -64,6 +65,7 @@ int cmmdc(int a, int b) {
 	}
 	return a;
 }
+
 
 void solutie1b() {
 	int v[200] = { 121,22,13,505,55,14};
@@ -411,7 +413,7 @@ void solutie2d() {
 	int v[100] = { 4321,1234,5414,6531,6425,5246 };
 	int d = 6;
 
-	for (int i = 0; i < d-1; i++) {
+	for (int i = 0; i < d - 1; i++) {
 		if (palindrom(v[i],v[i+1])) {
 			cout << v[i] << "," << v[i + 1] << endl;
 		}
