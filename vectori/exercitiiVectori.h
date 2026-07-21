@@ -33,7 +33,7 @@ int nrImp(int v[], int n) {
 	int ctImp = 0;
 
 	for (int i = 0;i < n;i++) {
-		if (v[i] % 2 == 1) {
+		if (v[i] % 2 != 0) {
 			ctImp++;
 		}
 	}

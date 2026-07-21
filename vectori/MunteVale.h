@@ -121,6 +121,10 @@ void solutie1() {
 	int d = 10;
 	
 	int poz=deterPozitie1Ex1(v,d);
+	if (poz == -1) {
+		cout << "Nu exista al 4-lea element cu 3-5 divizori proprii" << endl;
+		return;
+	}
 	sortatCrescatorInterval(v, 0, poz);
 	sortatDescrescatorInterval(v, poz, d - 1);
 	afisare(v,d);

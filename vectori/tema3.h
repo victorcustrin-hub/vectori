@@ -633,7 +633,7 @@ void sortat4102(int v[], int n) {
 
 void solutie4102() {
 	int v[100] = { 8, 9, 9, 4, 5, 7 };
-	int d = 8;
+	int d = 6;
 
 	sortat4102(v, d);
 	afisare(v, d);

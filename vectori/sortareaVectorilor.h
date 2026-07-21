@@ -106,7 +106,7 @@ void solutie510() {
 		}
 	}
 	sortatPrinBubbleSort(aux,ct);
-	afisare(v, d);
+	afisare(aux,ct);
 }
 
 

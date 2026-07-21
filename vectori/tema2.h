@@ -228,8 +228,8 @@ void solutie1e() {
 // 1 > 0 da        1                  1101                10000         0
 // 0 > 0 nu 
 long long baza2(int n) {
-	int b2 = 0;
-	int p = 1;
+	long long b2 = 0;
+	long long p = 1;
 
 	while (n > 0) {
 		int r = n % 2;
@@ -525,7 +525,7 @@ void solutie3b() {
 	int d = 5;
 
 	for (int i = 0; i < d; i++) {
-		if (i != d - 1 && patratPerfect(v[i]) == false && v[i] % 2 == v[i + 1] % 2) {
+		if (patratPerfect(v[i])==false&&v[i]%2==v[i+1]%2) {
 			int desc = 0;//descompunere factori primi?
 		}
 	}
@@ -648,11 +648,18 @@ void solutie3e() {
 	cout << "nr de elemente care respecta conditia este: " << ct << endl;
 }
 
-int cmmmc(int a,int b) {
+int cmmdc(int a, int b) {
+	while (b != 0) {
+		int r = a % b;
+		a = b;
+		b = r;
+	}
+	return a;
+}
 
-
-	if (a == 0 || b == 0) return 0;
-	return (a * b) / (a, b);
-
-
+int cmmmc(int a, int b) {
+	if (a == 0 || b == 0) {
+		return 0;
+	}
+	return a / cmmdc(a, b) * b;
 }

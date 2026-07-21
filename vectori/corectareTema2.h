@@ -100,14 +100,14 @@ void  afisareDescompunereFactoriPrimi(int n) {
 	
 }
 
+//!!
 void solutie3b() {
 	int v[300] = {12,24,27 };
 	int d = 3;
 
-
-	for (int i = 0;i < d;i++) {
+    for (int i = 0;i < d;i++) {
 		if (v[i + 1] != 0 && v[i - 1] >=1) {
-			if (patratPerfect(v[i]) == false && v[i] % 2 == v[i - 1] % 2 == v[i + 1] % 2) {
+			if (v[i] % 2 == v[i - 1] % 2 && v[i - 1] % 2 == v[i + 1] % 2) {
 				afisareDescompunereFactoriPrimi(v[i]);
 			}
 		}
@@ -119,9 +119,8 @@ void solutie3b() {
 		
 	}
 
-
-
 }
+//!!
 
 bool CifEgal(int n) {
 	int ultim = n % 10;
@@ -244,10 +243,20 @@ void solutie3e() {
 
 
 //[a,b]*(a,b)=a*b =>[a,b]=a*b/(a,b)
-int cmmmc(int a, int b) {
-	
-	return a * b / (a, b);
+int cmmdc(int a, int b) {
+	while (b != 0) {
+		int r = a % b;
+		a = b;
+		b = r;
+	}
+	return a;
+}
 
+int cmmmc(int a, int b) {
+	if (a == 0 || b == 0) {
+		return 0;
+	}
+	return a / cmmdc(a, b) * b;
 }
 
 void solutie3f() {

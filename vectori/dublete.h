@@ -30,7 +30,7 @@ void solutie1a() {
 	int d = 5;
 	int ct = 0;
 
-	for (int i = 0;i < d;i++) {
+	for (int i = 0;i < d-1;i++) {
 		if (cmmdc(v[i],v[i+1])==1) {
 			ct++;
 		}

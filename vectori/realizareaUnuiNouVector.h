@@ -57,16 +57,12 @@ bool palindrom(int n) {
 
 //b
 int cmmdc(int a, int b) {
-	while (a != b) {
-		if (a > b) {
-			a = a - b;
-		}
-		if (b > a) {
-			b = b - a;
-		}
+	while (b != 0) {
+		int r = a % b;
+		a = b;
+		b = r;
 	}
 	return a;
-	
 }
 
 void solutie1b() {
@@ -138,10 +134,7 @@ bool primCifEgalCuUltimCif(int n) {
 		n = n / 10;
 	}
 
-	if (cif == n) {
-		return true;
-	}
-	return false;
+	return cif == n;
 
 }
 
@@ -361,7 +354,7 @@ void solutie2b() {
 	int v[100] = { 45, 12, 7, 103, 564 };
 	int d = 5;
 
-	for (int i = 0; i < d; i++) {
+	for (int i = 0; i < d-1; i++) {
 		if (nrCifre(v[i]) == nrCifre(v[i + 1])) {
 			cout << v[i] << "," << v[i + 1] << endl;
 		}
@@ -416,9 +409,9 @@ bool palindrom(int n,int k) {
 
 void solutie2d() {
 	int v[100] = { 4321,1234,5414,6531,6425,5246 };
-	int d = 5;
+	int d = 6;
 
-	for (int i = 0; i < d; i++) {
+	for (int i = 0; i < d-1; i++) {
 		if (palindrom(v[i],v[i+1])) {
 			cout << v[i] << "," << v[i + 1] << endl;
 		}
@@ -502,7 +495,7 @@ void solutie2g() {
 //a
 //incorect
 int minim(int v[],int d) {
-	 int min = 9999;
+	int min = v[0];
 
 
 	for (int i = 0;i < d;i++) {
@@ -517,7 +510,7 @@ int minim(int v[],int d) {
 }
 
 int maxim(int v[], int d) {
-	int max = -9999;
+	int max = v[0];
 
 	for (int i = 0;i < d;i++) {
 		v[i] = abs(v[i]);
@@ -760,7 +753,7 @@ void solutieEx3e() {
 //EX3,a
 //realizati cmmdc-ul dintre elekentul minim si elementul maxiim
 int min(int v[], int d) {
-	long long int minim = 999999;
+	int minim = v[0];
 
 	for (int i = 0;i < d;i++) {
 		if (v[i] < minim) {
@@ -773,7 +766,7 @@ int min(int v[], int d) {
 }
 
 int max(int v[], int d) {
-	long long int maxim = -999999;
+	int maxim = v[0];
 
 	for (int i = 0;i < d;i++) {
 		if (v[i] > maxim) {
