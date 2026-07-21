@@ -649,10 +649,13 @@ void solutie3e() {
 }
 
 int cmmdc(int a, int b) {
-	while (b != 0) {
-		int r = a % b;
-		a = b;
-		b = r;
+	while (a != b) {
+		if (a > b) {
+			a = a - b;
+		}
+		if (b > a) {
+			b = b - a;
+		}
 	}
 	return a;
 }

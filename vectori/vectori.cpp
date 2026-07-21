@@ -1,9 +1,9 @@
 #include <iostream>
-#include "corectareTema2.h"
+#include "tema2.h"
 using namespace std;
 
 int main() {
 	
-	solutie3b();
+	solutie1a();
 
 }

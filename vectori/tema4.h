@@ -51,8 +51,8 @@ void inserareElement(int v[], int& dim, int poz, int elem) {
 
 
 void solutie1a() {
-	int v[100] = { 34, 17, 85, 29, 93, 71, 13, 44, 47, 62 };
-	int d = 10;
+	int v[100] = { 7, 11, 4, 6, 8, 13 };
+	int d = 6;
 	int ct = 0;
 	int poz = -1;
 
@@ -60,14 +60,19 @@ void solutie1a() {
 	for (int i = 0;i < d && poz == -1;i++) {
 		if (prim(v[i])) {
 			ct++;
-
 		}
 		if (ct == 3) {
 			poz = i;
 		}
-		stergereElement(v, d, poz);
-		afisare(v, d);
+		
+		
 	}
+	if (poz != -1) {
+		stergereElement(v, d, poz);
+	}
+
+	afisare(v, d);
+
 }
 //
 
