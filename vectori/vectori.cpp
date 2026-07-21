@@ -1,9 +1,9 @@
 #include <iostream>
-#include "tema4.h"
+#include "tema3.h"
 using namespace std;
 
 int main() {
 	
-	solutie2g();
+	solutie4102();
 
 }

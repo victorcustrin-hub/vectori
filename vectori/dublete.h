@@ -26,11 +26,11 @@ int cmmdc(int a, int b) {
 }
 
 void solutie1a() {
-	int v[100] = { 5};
+	int v[100] = { 5,12,54,13,19 };
 	int d = 5;
 	int ct = 0;
 
-	for (int i = 0;i < d-1;i++) {
+	for (int i = 0;i < d - 1;i++) {
 		if (cmmdc(v[i],v[i+1])==1) {
 			ct++;
 		}

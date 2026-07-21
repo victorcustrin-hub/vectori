@@ -607,36 +607,32 @@ void solutie164() {
 }
 //
 
-//18
-void sortat4102(int v[], int n) {
-	for (int i = 0; i < n - 1; i++) {
-			for (int j = i + 1; j < n; j++) {
-				if (v[j] % 2 == 0 && v[i] > v[j]) {
-					int aux = v[i];
-					v[i] = v[j];
-					v[j] = aux;
-				}
-			}
-		
-	}
-
-	for (int i = 0; i < n - 1; i++) {
-			for (int j = i + 1; j < n; j++) {
-				if (v[j] % 2 != 0 && v[i] < v[j]) {
-					int aux = v[i];
-					v[i] = v[j];
-					v[j] = aux;
-				}
-			}
-	}
-}
+//18 Să se ordoneze crescător subșirul format din elementele pare din vector și descrescător subșirul format din elementele impare
 
 void solutie4102() {
-	int v[100] = { 8, 9, 9, 4, 5, 7 };
-	int d = 6;
+	int v[100] = { 1,2,3,4,5,6,7,8,9};
+	int d = 9;
+	int pare[100];
+	int impare[100];
+	int nrPare = 0;
+	int nrImpare = 0;
 
-	sortat4102(v, d);
-	afisare(v, d);
+	for (int i = 0;i < d;i++) {
+		if (v[i] % 2 == 0) {
+			pare[nrPare] = v[i];
+			nrPare++;
+		}
+		else {
+			impare[nrImpare] = v[i];
+			nrImpare++;
+		}
+
+	}
+
+	sortatCrescator(pare, nrPare);
+	sortatPrinBubbleSortDescrescator(impare, nrImpare);
+	afisare(pare, nrPare);
+	afisare(impare, nrImpare);
 }
 //
 
