@@ -354,7 +354,7 @@ void solutie2b() {
 	int v[100] = { 45, 12, 7, 103, 564 };
 	int d = 5;
 
-	for (int i = 0; i < d-1; i++) {
+	for (int i = 0; i < d - 1; i++) {
 		if (nrCifre(v[i]) == nrCifre(v[i + 1])) {
 			cout << v[i] << "," << v[i + 1] << endl;
 		}

@@ -233,11 +233,10 @@ int cmmdc(int a, int b) {
 
 void solutie1g() {
 	int v[100] = { 2, 3, 5, 7 };
-	int d = 6;
+	int d = 4;
 
 	for (int i = 0; i < d-1; i++) {
 		if (cmmdc(v[i], v[i + 1]) == 1) {
-			stergereElement(v, d, i);
 			stergereElement(v, d, i);
 			i--;
 		}
@@ -351,7 +350,7 @@ void solutie2c() {
 	int d = 4;
 	int ct = 0;
 
-	for (int i = 0;i < d;i++) {
+	for (int i = 0;i < d-1;i++) {
 		if (palindromDouaNumere(v[i], v[i + 1])) {
 			inserareElement(v, d, i + 1, alipire(v[i], v[i + 1]));
 			i++;

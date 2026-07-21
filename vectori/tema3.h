@@ -608,7 +608,6 @@ void solutie164() {
 //
 
 //18 Să se ordoneze crescător subșirul format din elementele pare din vector și descrescător subșirul format din elementele impare
-
 void solutie4102() {
 	int v[100] = { 1,2,3,4,5,6,7,8,9};
 	int d = 9;
