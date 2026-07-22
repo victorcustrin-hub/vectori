@@ -126,3 +126,88 @@ void solutie5() {
 	afisare(v, d);
 
 }
+//
+
+//1.6
+
+//   i<d-1       v[i]==v[i+1]   ct    v[ct]==v[ct+1]     lungime     ct       i     i
+//   0<5 da           nu         -          -               -         -       -     1
+//   1<5 da           da         1        5=5 da            2         2       -     -
+//     -               -         -        5=5 da            3         3       -     -
+//     -               -         -        5=1 nu            3         3       3     3
+//   4<5 da           da         4        1=1 da            2         5       -     -
+//   5<5 nu       
+void solutie6() {
+	int v[100] = { 2,5,5,5,1,1,1,1};
+	int d = 6;
+
+	int lungimeMax = 1;
+	int valoare = v[0];
+
+	for (int i = 0;i < d - 1;i++) {
+		int lungime = 1;
+		if (v[i] == v[i + 1]) {
+			int ct = i;
+			while (v[ct] == v[ct + 1]) {
+				lungime++;
+				ct++;
+			}
+			i = ct;
+		}
+		
+		if (lungime > lungimeMax) {
+			lungimeMax = lungime;
+			valoare = v[i];
+		}
+		
+	}
+
+	cout << "valoare " << valoare << ", lungime " << lungimeMax << endl;
+
+}
+//
+
+//2.1
+int sumaCifrelor(int n) {
+	int s = 0;
+
+	while (n != 0) {
+		int cif = n % 10;
+		s = s + cif;
+		n = n / 10;
+	}
+
+	return s;
+
+}
+
+void solutie7() {
+	int v[100] = { 213,45,1000 };
+	int d = 3;
+	int nou[100];
+	int ct = 0;
+
+	for (int i = 0;i < d;i++) {
+		int suma = sumaCifrelor(v[i]);
+		nou[ct] = suma;
+		ct++;
+	}
+
+	afisare(nou, ct);
+
+}
+
+
+int oglindit(int n) {
+	int nou = 0;
+
+	while (n != 0) {
+		int cif = n % 10;
+		nou = nou * 10 + cif;
+		n = n / 10;
+	}
+
+	return nou;
+
+}
+

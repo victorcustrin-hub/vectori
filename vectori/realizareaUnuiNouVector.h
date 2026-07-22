@@ -92,7 +92,7 @@ bool progresieAritmetica(int n,int r) {
 
 	int cifu = n % 10;
 	n = n / 10;
-	while (n > 9) {
+	while (n > 0) {
 	
 		int cifp = n % 10;
 		if (cifp - cifu != r) {

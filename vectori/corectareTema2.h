@@ -246,15 +246,10 @@ void solutie3e() {
 
 //[a,b]*(a,b)=a*b =>[a,b]=a*b/(a,b)
 int cmmdc(int a, int b) {
-	while (a != b) {
-		if (a > b) {
-			a = a - b;
-
-		}
-		if (b > a) {
-			b = b - a;
-
-		}
+	while (b != 0) {
+		int r = a % b;
+		a = b;
+		b = r;
 	}
 	return a;
 }

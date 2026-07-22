@@ -4,6 +4,6 @@ using namespace std;
 
 int main() {
 	
-	solutie5();
+	cout << oglindit(124);
 
 }
