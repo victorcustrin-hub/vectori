@@ -70,9 +70,9 @@ void solutie1a() {
 	int d = 10;
 	int ct = 0;
 	int poz = -1;
-	
 
-	for (int i = 0;i < d&&poz==-1;i++) {
+
+	for (int i = 0;i < d && poz == -1;i++) {
 		if (prim(v[i])) {
 			ct++;
 
@@ -80,6 +80,42 @@ void solutie1a() {
 		if (ct == 3) {
 			poz = i;
 		}
-	stergereElement(v, d, poz);
-	afisare(v, d);
+		stergereElement(v, d, poz);
+		afisare(v, d);
+	}
 }
+
+//PBINFO
+
+void inserareElementDupa(int v[], int& dim, int poz, int elem) {
+	
+	for (int i = dim;i > poz + 1;i--) {
+		v[i] = v[i - 1];
+	}
+	dim++;
+	v[poz + 1] = elem;
+
+}
+
+void solutie159() {
+	int v[100] = { 7, 3, 4, 1, 6 };
+	int d = 5;
+	int ct = 0;
+
+
+	for (int i = 0;i < d;i++) {
+
+		if (v[i] % 2 == 0) {
+			inserareElementDupa(v, d, i, v[i] * 2);
+			i++;
+		}
+
+	}
+
+	afisare(v, d);
+
+}
+
+
+
+

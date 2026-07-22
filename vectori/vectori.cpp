@@ -1,9 +1,9 @@
 #include <iostream>
-#include "tema2.h"
+#include "exercitiiRecapitulative.h"
 using namespace std;
 
 int main() {
 	
-	solutie3b();
+	solutie3();
 
 }

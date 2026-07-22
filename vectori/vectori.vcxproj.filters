@@ -50,5 +50,8 @@
     <ClInclude Include="tema4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="exercitiiRecapitulative.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

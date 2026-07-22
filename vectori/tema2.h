@@ -695,3 +695,4 @@ int cmmmc(int a, int b) {
 	}
 	return a / cmmdc(a, b) * b;
 }
+
