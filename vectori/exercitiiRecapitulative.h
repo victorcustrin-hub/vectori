@@ -107,3 +107,22 @@ void solutie4() {
 	afisare(nou, ct);
 
 }
+//
+
+//1.5
+void solutie5() {
+	int v[100] = { 3,9,4,12,5 };
+	int d = 5;
+	int primul = v[0];
+
+	if (primul != 0) {
+		for (int i = 0;i < d;i++) {
+			if (v[i] % primul == 0) {
+				v[i] = 0;
+			}
+		}
+	}
+
+	afisare(v, d);
+
+}
