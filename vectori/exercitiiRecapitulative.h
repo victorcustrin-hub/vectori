@@ -197,7 +197,7 @@ void solutie7() {
 
 }
 
-
+//2.2
 int oglindit(int n) {
 	int nou = 0;
 
@@ -209,5 +209,203 @@ int oglindit(int n) {
 
 	return nou;
 
+}
+
+bool palindrom(int n) {
+	int ogl = oglindit(n);
+
+	if (ogl == n) {
+		return true;
+	}
+	return false;
+}
+
+void solutie8() {
+	int v[100] = { 121,45,707,89 };
+	int d = 4;;
+
+	for (int i = 0;i < d;i++) {
+		if (palindrom(v[i])) {
+			cout << v[i] << " ";
+		}
+	}
+
+}
+//
+
+//2.3
+int cifraMinVector(int v[],int d) {
+	int min = 10;
+
+	for (int i = 0;i < d;i++) {
+		int n = v[i];
+		while (n != 0) {
+			int cif = n % 10;
+			if (cif < min) {
+				min = cif;
+			}
+			n = n / 10;
+		}
+	}
+	return min;
+}
+
+int cifraMaxVector(int v[], int d) {
+	int max = -1;
+
+	for (int i = 0;i < d;i++) {
+		int n = v[i];
+		while (n != 0) {
+			int cif = n % 10;
+			if (cif > max) {
+				max = cif;
+			}
+			n = n / 10;
+		}
+	}
+	return max;
+}
+
+void solutie9() {
+	int v[100] = { 32,250,216 };
+	int d = 4;;
+
+
+	cout <<"Cifra minima "<< cifraMinVector(v, d)<<", cifra maxima " << cifraMaxVector(v, d) << endl;
+
+}
+//
+
+//2.4
+int cifControl(int n) {
+	int r = n % 9;
+	if (r == 0) {
+		return 9;
+	}
+	return r;
+}
+
+void solutie10() {
+	int v[100] = { 542,741,999 };
+	int d = 3;
+
+	for (int i = 0;i < d;i++) {
+		int cif = cifControl(v[i]);
+		if (cif % 2 == 0) {
+			cout << v[i] << " ";
+		}
+	}
+
+}
+//
+
+//2.5
+bool PrimaCifEgalCUltimaCif(int n) {
+	int a = n % 10;
+
+	while (n > 9) {
+		n = n / 10;
+	}
+	if (a == n) {
+		return true;
+	}
+	return false;
+}
+
+void solutie11() {
+	int v[100] = { 19,7137,214,1301 };
+	int d = 4;
+	int nou[100];
+	int ct = 0;
+
+
+	for (int i = 0;i < d;i++) {
+		if (PrimaCifEgalCUltimaCif(v[i])) {
+			nou[ct] = oglindit(v[i]);
+		}
+		else {
+			nou[ct] = v[i];
+		}
+		ct++;
+	}
+	afisare(nou, ct);
+}
+//
+
+//2.6
+bool prim(int n) {
+	if (n <= 1) {
+		return false;
+	}
+
+	for (int k = 2;k <= n / 2;k++) {
+		if (n % k == 0) {
+			return false;
+		}
+	}
+	return true;
+ }
+
+bool superprim(int n) {
+
+	while (n > 0) {
+		if (prim(n) == false) {
+			return false;
+		}
+		n = n / 10;
+	}
+
+	return true;
+
+}
+
+void solutie12() {
+	int v[100] = { 12,239,45,23,7 };
+	int d = 5;
+
+	for (int i = 0;i < d;i++) {
+		if (superprim(v[i])) {
+			cout<<i+1<<" ";
+		}
+	}
+
+}
+//
+
+//2.7
+bool patratPerfect(int n) {
+	return sqrt(n) == (int)sqrt(n);
+}
+                               
+void descompunereFactoriPrimi(int n) {
+    cout << n << "=";
+    int a = n;
+
+	for (int k = 2;k <= a / 2;k++) {
+		if (prim(k) && n % k == 0) {
+			int ct = 0;
+			while (n % k == 0) {
+
+				ct++;
+				n = n / k;
+
+			}
+			cout << k << "^" << ct << "*";
+		}
+	}
+	cout << "1";
+	cout << endl;
+}
+
+void solutie13() {
+	int v[300] = { 12,16,18 };
+	int d = 3;
+
+	for (int i = 0;i < d;i++) {	
+		if (patratPerfect(v[i]) == false) {
+			descompunereFactoriPrimi(v[i]);
+		}
+	}
+	
 }
 
