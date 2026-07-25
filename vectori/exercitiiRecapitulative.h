@@ -3,6 +3,9 @@
 #include <cmath>
 using namespace std;
 
+//intrebari:4.2
+
+
 //1.1
 int medieAritmetica(int v[], int d) {
 	double suma = 0;
@@ -379,16 +382,14 @@ bool patratPerfect(int n) {
                                
 void descompunereFactoriPrimi(int n) {
     cout << n << "=";
-    int a = n;
+    int aux = n;
 
-	for (int k = 2;k <= a / 2;k++) {
+	for (int k = 2;k <= aux / 2;k++) {
 		if (prim(k) && n % k == 0) {
 			int ct = 0;
 			while (n % k == 0) {
-
 				ct++;
 				n = n / k;
-
 			}
 			cout << k << "^" << ct << "*";
 		}
@@ -398,7 +399,7 @@ void descompunereFactoriPrimi(int n) {
 }
 
 void solutie13() {
-	int v[300] = { 12,16,18 };
+	int v[100] = { 12,16,18 };
 	int d = 3;
 
 	for (int i = 0;i < d;i++) {	
@@ -406,6 +407,193 @@ void solutie13() {
 			descompunereFactoriPrimi(v[i]);
 		}
 	}
-	
+}
+//
+
+//3.1
+int contorCifre(int n) {
+	int ct = 0;
+	while (n != 0) {
+		ct++;
+		n = n / 10;
+	}
+	return ct;
 }
 
+void solutie14() {
+	int v[100] = { 45,12,7,103,564 };
+	int d = 5;
+
+	for (int i = 0;i < d - 1;i++) {
+		if (contorCifre(v[i]) == contorCifre(v[i + 1])) {
+			cout << v[i] << " " << v[i + 1] << endl;
+		}
+	}
+}
+//
+
+//3.2
+int cmmdc(int a, int b) {
+	while (b != 0) {
+		int r = a % b;
+		a = b;
+		b = r;
+	}
+	return a;
+}
+
+void solutie15() {
+	int v[100] = { 12,25,10,21 };
+	int d = 4;
+	int ct = 0;
+
+	for (int i = 0;i < d - 1;i++) {
+		if (cmmdc(v[i], v[i + 1]) == 1) {
+			ct++;
+		}
+	}
+	cout << ct;
+}
+//
+
+//3.3
+void solutie16() {
+	int v[100] = { 123,34,321,4563,43,56,65,4513 };
+	int d = 8;
+
+	for (int i = 0;i < d - 1;i++) {
+		for (int j = i + 1;j < d;j++) {
+			if (v[i] == oglindit(v[j])) {
+				cout << v[i] << " " << v[j] << endl;
+			}
+		}
+	}
+
+}
+//
+
+//3.4
+void solutie17() {
+	int v[100] = { 4,7,10,13,6 };
+	int d = 5;
+
+	int sMax = -1;
+	int nr1 = 0;
+	int nr2 = 0;
+
+	for (int i = 0; i < d - 1; i++) {
+		for (int j = i + 1; j < d; j++) {
+
+			if (prim(v[i]) && prim(v[j])) {
+				int suma = v[i] + v[j];
+
+				if (suma > sMax) {
+					sMax = suma;
+					nr1 = v[i];
+					nr2 = v[j];
+				}
+			}
+		}
+	}
+
+
+	if (sMax != -1) {
+		cout << nr1 << " + " << nr2 << " = " << sMax << endl;
+	}
+	else {
+		cout << "Nu exista doua numere prime in vector." << endl;
+	}
+}
+//
+
+//4.1
+void bubbleSortCrescator(int v[], int d) {
+	bool sortat = true;
+
+	do {
+		sortat = true;
+		for (int i = 0;i < d - 1;i++) {
+			
+			if (v[i] > v[i + 1]) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+	   }
+
+	} while (sortat == false);
+
+}
+
+void solutie18() {
+	int v[100] = { 32,56,19,42 };
+	int d = 4;
+
+	bubbleSortCrescator(v, d);
+	afisare(v, d);
+
+}
+//
+
+//4.2
+void bubbleSortCrescatornrPrime(int v[], int d) {
+	bool sortat = true;
+
+	do {
+		sortat = true;
+		for (int i = 0;i < d - 1;i++) {
+
+			if (prim(v[i])&&v[i] > v[i + 1]) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+		}
+
+	} while (sortat == false);
+
+}
+
+void solutie19() {
+	int v[100] = { 29,12,7,113,4 };
+	int d = 5;
+
+
+	bubbleSortCrescatornrPrime(v, d);
+	afisare(v, d);
+
+}
+//
+
+//4.3
+void bubbleSortCrescatorSumaCifre(int v[], int d) {
+	bool sortat = true;
+
+	do {
+		sortat = true;
+		for (int i = 0;i < d - 1;i++) {
+
+			if (sumaCifrelor(v[i]) > sumaCifrelor(v[i + 1])) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+		}
+
+	} while (sortat == false);
+
+}
+
+void solutie20() {
+	int v[100] = { 25,43,16 };
+	int d = 4;
+
+
+	bubbleSortCrescatorSumaCifre(v, d);
+	afisare(v, d);
+
+}
+//
