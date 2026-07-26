@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-//intrebari:4.2
+//intrebari:4.2,4.6
 
 
 //1.1
@@ -588,7 +588,7 @@ void bubbleSortCrescatorSumaCifre(int v[], int d) {
 }
 
 void solutie20() {
-	int v[100] = { 25,43,16 };
+	int v[100] = { 89,22,51};
 	int d = 4;
 
 
@@ -597,3 +597,222 @@ void solutie20() {
 
 }
 //
+
+//4.4
+void sortatCrescatorInterval(int v[], int start, int finish) {
+	bool sortat = true;
+	do {
+		sortat = true;
+		for (int i = start;i < finish;i++) {
+			if (v[i] > v[i + 1]) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+		}
+	} while (sortat == false);
+
+}
+
+void sortatDescrescatorInterval(int v[], int start, int finish) {
+	bool sortat = true;
+	do {
+		sortat = true;
+		for (int i = start;i < finish;i++) {
+			if (v[i] < v[i + 1]) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+		}
+	} while (sortat == false);
+}
+
+int pozMax(int v[],int d) {
+	int pozMax = 0;
+
+	for (int i = 1; i < d; i++) {
+		if (v[i] > v[pozMax]) {
+			pozMax = i;
+		}
+	}
+	return pozMax;
+}
+
+
+void solutie21() {
+	int v[100] = { 3,9,5,2,8,1 };
+	int d = 6;
+	int poz = pozMax(v,d);
+
+
+	sortatCrescatorInterval(v, 0, poz);
+	sortatDescrescatorInterval(v, poz, d - 1);
+	afisare(v, d);
+}
+//
+
+//4.5
+void bubbleSortCrescatorCuIndici(int v[], int d,int poz[]) {
+	bool sortat = true;
+
+	do {
+		sortat = true;
+		for (int i = 0;i < d - 1;i++) {
+
+			if (v[i] > v[i + 1]) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				int aux2 = poz[i];
+				poz[i] = poz[i + 1];
+				poz[i + 1] = aux2;
+				sortat = false;
+			}
+		}
+
+	} while (sortat == false);
+
+}
+
+void solutie22() {
+	int v[100] = { 8,20,16,14 };
+	int d = 4;
+	int pozitii[100];
+
+	for (int i = 0;i < d;i++) {
+		pozitii[i] = i + 1;
+	}
+
+	bubbleSortCrescatorCuIndici(v, d, pozitii);
+	afisare(v, d);
+	cout << endl;
+	afisare(pozitii, d);
+}
+//
+
+//4.6
+void solutie23() {
+	int v[100] = { 5,4,3,2,1,6 };
+	int d = 6;
+
+    
+	afisare(v, d);
+	cout << endl;
+}
+//
+
+//5.1
+void stergereElement(int v[], int& d, int poz) {
+
+	for (int i = poz;i < d;i++) {
+		v[i] = v[i + 1];
+	}
+	d--;
+}
+
+void solutie24() {
+	int v[100] = { 9,0,0,5,0 };
+	int d = 5;
+	int ct = 0;
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] == 0) {
+			stergereElement(v, d, i);
+			i--;
+		}
+	}
+	afisare(v, d);
+}
+//
+
+//5.2
+void solutie25() {
+	int v[100] = { 5,11,23,4,7 };
+	int d = 5;
+	int a = 3;
+	int b = 7;
+
+	if (a > b) {
+		int aux = a;
+		a = b;
+		b = aux;
+	}
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] >= a && v[i] <= b) {
+			stergereElement(v, d, i);
+			i--;
+		}
+	}
+	afisare(v, d);
+}
+//
+
+//5.3
+void inserareElement(int v[], int& d, int poz, int elem) {
+	for (int i = d;i > poz;i--) {
+		v[i] = v[i - 1];
+	}
+	d++;
+	v[poz] = elem;
+}
+
+void solutie26() {
+	int v[100] = { 4,-2,5 };
+	int d = 3;
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] < 0) {
+			int x = v[i] * v[i] * v[i];
+			inserareElement(v, d, i + 1, x);
+			i++;
+		}
+	}
+	afisare(v, d);
+}
+//
+
+//5.4
+void solutie27() {
+	int v[100] = { 4,7,10,13,8,5 };
+	int d = 6;
+	int ct = 0;
+
+	for (int i = 0;i < d;i++) {
+		if (prim(v[i])) {
+			ct++;
+		}
+
+		if (ct == 3) {
+			stergereElement(v, d, i);
+			break;
+		}
+
+	}
+	afisare(v, d);
+}
+//
+
+//5.5
+void solutie28() {
+	int v[100] = { 45,121,7 };
+	int d = 3;
+
+	for (int i = 0;i < d;i++) {
+		if (PrimaCifEgalCUltimaCif(v[i])&&v[i]>9) {
+			int cif = v[i] % 10;
+			inserareElement(v, d, i, cif);
+			inserareElement(v, d, i+2, cif);
+			i=i+2;
+		}
+	}
+	afisare(v, d);
+}
+
+
+
+
+
