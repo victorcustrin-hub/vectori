@@ -3,8 +3,6 @@
 #include <cmath>
 using namespace std;
 
-//intrebari:4.2,4.6
-
 
 //1.1
 int medieAritmetica(int v[], int d) {
@@ -391,10 +389,15 @@ void descompunereFactoriPrimi(int n) {
 				ct++;
 				n = n / k;
 			}
-			cout << k << "^" << ct << "*";
+			cout << k << "^" << ct;
+			if (n > 1) {
+				cout << "*";
+			}
 		}
 	}
-	cout << "1";
+	if (n > 1) {
+		cout << n << "^1";
+	}
 	cout << endl;
 }
 
@@ -989,8 +992,8 @@ void solutie33() {
 	for (int i = 0; i < d; i++) {
 		if (patratPerfect(v[i])) {
 			vf = true;
-			sortatCrescatorInterval(v, 0, i);
-			sortatDescrescatorInterval(v, i + 1, d);
+			sortatCrescatorInterval(v, 0, i - 1);
+			sortatDescrescatorInterval(v, i + 1, d - 1);
 			break;
 		}
 	}
@@ -1003,5 +1006,3 @@ void solutie33() {
 	}
 }
 //
-
-//CORECATREA TEMEI
