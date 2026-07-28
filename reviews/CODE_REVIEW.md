@@ -1,111 +1,97 @@
-# Code Review — victor-vectori (toate headerele)
+# Code Review — victor-vectori · runda 3: `exercitiiRecapitulative.h`
 
-Review pe cele 7 headere din `vectori/`: `exercitiiVectori.h`, `tema2.h`, `realizareaUnuiNouVector.h`, `MunteVale.h`, `dublete.h`, `corectareTema2.h`, `tema3.h`, plus `sortareaVectorilor.h` și `vectori.cpp`. Codul NU a fost modificat — toate observațiile sunt doar aici.
+Review pentru fișa recapitulativă rezolvată integral (33 de soluții, module 1–5 + provocări). Codul NU a fost modificat — totul e doar aici.
 
----
-
-## 🔴 Critice (bug-uri reale)
-
-### B1 — `cmmmc` returnează mereu `a`, nu cmmmc-ul (operatorul virgulă)
-- `corectareTema2.h:249` — `return a * b / (a, b);`
-- `tema2.h:655` — `return (a * b) / (a, b);`
-
-În C++, `(a, b)` NU este „cmmdc de a și b" ca în notația matematică `[a,b] = a·b/(a,b)`. Este **operatorul virgulă**: evaluează `a`, îl aruncă, și întoarce `b`. Deci expresia devine `a * b / b`, adică `a`. `solutie3f` din `corectareTema2.h:257` afișează deci `v[7]` (56), nu cmmmc(56, 196).
-
-**Ce înveți:** notația matematică nu se traduce direct în cod. Compilatorul a acceptat expresia pentru că e sintactic validă — dar cu alt sens. Aici trebuia un apel real: `cmmdc(a, b)`.
-
-### B2 — comparația înlănțuită de parități nu face ce pare
-- `corectareTema2.h:110` — `v[i] % 2 == v[i - 1] % 2 == v[i + 1] % 2`
-
-C++ evaluează stânga→dreapta: întâi `v[i]%2 == v[i-1]%2`, care dă `true`/`false` (adică `1`/`0`), apoi compară acest `0`/`1` cu `v[i+1]%2`. Deci pentru trei numere pare: `(0==0)` → `1`, apoi `1 == 0` → `false`. Exact cazul pe care voiai să-l prinzi pică testul.
-
-Corect: `v[i] % 2 == v[i-1] % 2 && v[i-1] % 2 == v[i+1] % 2`.
-
-### B3 — acces în afara vectorului: `v[i-1]` la `i == 0`
-- `corectareTema2.h:109` — `if (v[i + 1] != 0 && v[i - 1] >= 1)`
-
-La prima iterație `i = 0`, deci `v[i-1]` este `v[-1]` — citire înainte de începutul vectorului, comportament nedefinit (poate merge azi, poate crăpa mâine). Condiția de graniță trebuie pusă pe **index**, nu pe valoare: `if (i > 0 && i < d - 1)`.
-
-**Ce înveți:** `v[i+1] != 0` verifică *valoarea* vecinului, nu *existența* lui. Existența unui vecin o decide indexul, valoarea nu-ți spune nimic despre graniță.
-
-### B4 — `cmmdc` prin scăderi intră în buclă infinită pentru 0
-- `realizareaUnuiNouVector.h:59-70` — `while (a != b) { ... a = a - b ... }`
-- declanșat real în `solutie3a` (`realizareaUnuiNouVector.h:533-544`): vectorul conține `0`, `minim(v,d)` întoarce `0`, iar `cmmdc(0, 45)` nu se termină niciodată (`b = 45 - 0 = 45`, la infinit).
-
-Varianta cu scăderi cere `a > 0 && b > 0`. Ai deja varianta corectă (Euclid cu rest) în `dublete.h:18-26` — aceea se oprește natural când `b == 0`. Ai marcat singur `//incorect` la `realizareaUnuiNouVector.h:503` — diagnosticul complet e acesta.
-
-### B5 — `solutie1a` din dublete: dimensiune falsă + dublet cu element inexistent
-- `dublete.h:29-34` — `int v[100] = { 5 };` dar `d = 5`, iar bucla `i < d` folosește `v[i+1]`.
-
-Două probleme suprapuse: (1) vectorul are un singur element cu sens, dar `d = 5` spune că are cinci — pozițiile 1–4 sunt `0` (agregatele se completează cu zero); (2) la `i = 4` se citește `v[5]`, un element care nu face parte din date. Pentru dublete (perechi alăturate), bucla corectă e `i < d - 1`.
-
-### B6 — același off-by-one la dublete în `solutie2b`
-- `realizareaUnuiNouVector.h:364-365` — `for (i = 0; i < d; i++)` cu `nrCifre(v[i+1])`.
-
-La `i = d-1` se compară cu `v[d]`, care e în afara datelor (aici `0`, deci `nrCifre(0) = 0` — rezultat fals silențios, nu crash, ceea ce e mai periculos). Corect: `i < d - 1`.
-
-### B7 — sortezi `aux`, dar afișezi `v`
-- `sortareaVectorilor.h:108-109` — `sortatPrinBubbleSort(aux, ct); afisare(v, d);`
-
-Toată munca de filtrare + sortare a numerelor prime se face în `aux`, apoi se afișează vectorul original neatins. Corect: `afisare(aux, ct)`.
-
-### B8 — `d = 8` pe un vector cu 6 elemente
-- `tema3.h:635-636` — `int v[100] = { 8, 9, 9, 4, 5, 7 }; int d = 8;`
-
-Pozițiile 6 și 7 sunt `0` și intră în sortare ca elemente reale — output-ul conține două zerouri care nu există în date. Dimensiunea declarată trebuie să corespundă exact cu numărul de valori din inițializare.
+> **Progres față de runda trecută.** Ambele critice vechi sunt rezolvate corect:
+> `progresieAritmetica` are acum `while (n > 0)` (`realizareaUnuiNouVector.h:95`) și `cmmdc` e Euclid cu rest în `tema2.h:681` și `corectareTema2.h:249`. În plus, `cmmdc` din fișierul nou (`exercitiiRecapitulative.h:436`) e scris direct corect. Bravo — exact varianta discutată.
+>
+> **Scor pe fișă:** 27 din 33 corecte la prima strigare, inclusiv aproape toate provocările (P1–P4 corecte). Criticele de mai jos sunt concentrate în 5 soluții.
 
 ---
 
-## 🟡 Importante (design / pattern)
+## 🔴 Critice
 
-### M1 — funcții definite duplicat în headere: bombă de compilare
-`prim` apare în 6 fișiere (`exercitiiVectori.h:70`, `tema2.h:8`, `realizareaUnuiNouVector.h:186`, `dublete.h:6`, `corectareTema2.h:9`, `sortareaVectorilor.h:84`), `afisare` în 5, `cmmdc`, `palindrom`, `baza2`, `cifControl`, `par`, `div3`, `solutie1a` etc. la fel.
+### B1 — `solutie6` (1.6, platou): while-ul interior nu se oprește la marginea vectorului
+- `exercitiiRecapitulative.h:154` — `while (v[ct] == v[ct + 1])` fără nicio limită pe `ct`
+- agravat de datele de test: `exercitiiRecapitulative.h:144-145` — 8 valori în acolade, dar `d = 6`
 
-Azi merge pentru că `vectori.cpp:2` include un singur header. În momentul în care incluzi două (de exemplu `dublete.h` + `tema2.h`), compilatorul dă „function redefinition" — `#pragma once` NU te apără, el previne doar dubla includere a *aceluiași* fișier, nu ciocnirea de nume *între* fișiere.
+Bucla interioară compară `v[ct]` cu `v[ct+1]` până când valorile diferă — dar nimic nu o oprește la `d`. Cu `{2,5,5,5,1,1,1,1}` și `d=6`, vectorul *logic* e `{2,5,5,5,1,1}`, însă while-ul merge mai departe peste `v[6]` și `v[7]` (care există în acolade, dar sunt în afara lui `d`):
 
-**Ce înveți:** headerul e pentru *declarații*, definițiile stau în `.cpp`. La nivelul actual, o soluție pragmatică: un singur `utile.h` cu funcțiile comune (`prim`, `afisare`, `cmmdc`, `palindrom`) și headerele de teme doar îl includ.
+```
+i=4: v[4]==v[5] (1==1) → ct=4
+     v[4]==v[5] → lungime=2, ct=5
+     v[5]==v[6] (1==1, dar v[6] e DINCOLO de d!) → lungime=3, ct=6
+     v[6]==v[7] (1==1) → lungime=4, ct=7
+     v[7]==v[8] (1==0) → stop
+→ afișează: valoare 1, lungime 4   (corect era: valoare 5, lungime 3)
+```
 
-### M2 — `solutie1` din MunteVale poate primi poziție `-1`
-- `MunteVale.h:119-126` — `deterPozitie1Ex1` returnează `-1` dacă nu găsește al 4-lea element (`MunteVale.h:87,99`), iar apoi `sortatDescrescatorInterval(v, -1, d-1)` pornește bucla de la `i = -1` → `v[-1]`.
+**Ce înveți:** `d` e granița lumii tale, nu conținutul acoladelor. Orice buclă care avansează un index trebuie să aibă condiția de graniță *în ea*: `while (ct < d - 1 && v[ct] == v[ct + 1])`. Ordinea contează — testul de graniță stă PRIMUL, ca `v[ct+1]` să nu fie citit când `ct+1 == d`. Propriul tău tabel de urmărire (liniile 136–142) se oprea la `ct=5` — tabelul era corect, codul nu-l respectă.
 
-Cu datele actuale poziția e 4, deci nu se vede — dar nimic nu previne cazul. După apel: `if (poz == -1) return;`.
+### B2 — `solutie19` (4.2): sortarea „doar a primelor" mută și ne-primele
+- `exercitiiRecapitulative.h:547` — `if (prim(v[i]) && v[i] > v[i + 1])` + swap cu vecinul
 
-### M3 — `solutie2d`: 6 valori în inițializare, `d = 5`
-- `realizareaUnuiNouVector.h:418-419` — `{ 4321,1234,5414,6531,6425,5246 }` cu `d = 5`.
+E chiar una din întrebările tale — pe bună dreptate. Condiția testează dacă `v[i]` e prim, dar swap-ul se face cu `v[i+1]` *oricine ar fi el* — deci un prim „împinge" ne-primele din drum și toată lumea se mută de pe pozițiile ei. Pe `{29,12,7,113,4}`:
 
-Aici combinația `i < d` + `v[i+1]` acoperă accidental și al 6-lea element, deci „merge" — dar din motivul greșit. Aceeași disciplină ca la B8: `d` = numărul real de elemente, iar bucla de dublete `i < d - 1`.
+```
+pasul 1: 29>12 swap → {12,29,7,113,4} → 29>7 swap → {12,7,29,113,4} → 113>4 swap → {12,7,29,4,113}
+pasul 2: 29>4 swap → {12,7,4,29,113}
+pasul 3: 7>4 swap  → {12,4,7,29,113}
+→ afișează: 12 4 7 29 113   (corect era: 7 12 29 113 4 — 12 și 4 nu aveau voie să se miște!)
+```
 
-### M4 — `baza2` acumulează în `int` deși promite `long long`
-- `tema2.h:230-241` — `long long baza2(int n)` dar `int b2` și `int p`.
+**Ce înveți:** „sortează subșirul păstrând restul pe loc" nu se poate face swapuind vecini din vectorul mare — vecinul unui prim nu e următorul prim, e doar următorul element. Mecanismul corect are 3 pași: **extrage** (copiază primele într-un vector `aux` și pozițiile lor într-un `poz`), **sortează** `aux` cu bubble sort-ul normal, **pune înapoi** (`v[poz[k]] = aux[k]`). Restul elementelor nici nu sunt atinse. Vezi și răspunsul la întrebările tale, mai jos — 4.6 e același tipar de două ori.
 
-Pentru `n ≥ 1024` reprezentarea are 11+ cifre zecimale și depășește `int` (max ~2.1 miliarde) *înainte* de return — tipul de retur `long long` nu mai salvează nimic, trunchierea s-a produs deja. Variabilele de lucru trebuie să fie și ele `long long`.
+### B3 — `solutie20` (4.3): `d = 4` dar doar 3 elemente în acolade → un `0` fantomă intră în sortare
+- `exercitiiRecapitulative.h:591-592` — `int v[100] = { 89,22,51 }; int d = 4;`
+- același tipar, azi fără efect: `exercitiiRecapitulative.h:273-274` — `solutie9` are 3 elemente și `d = 4`
 
-### M5 — testul de impar cu `% 2 == 1` pică pe numere negative
-- `exercitiiVectori.h:36` — `v[i] % 2 == 1`.
+În C++, `int v[100] = {89,22,51}` umple restul cu `0`. Cu `d=4`, al patrulea element „văzut" e `v[3] = 0`, cu suma cifrelor `0` — cea mai mică — deci sortarea îl aduce primul:
 
-În C++, `-7 % 2` este `-1`, nu `1`, deci imparele negative nu sunt numărate. Idiomul robust: `v[i] % 2 != 0`.
+```
+→ afișează: 0 22 51 89   (corect era: 22 51 89)
+```
 
-### M6 — santinele magice în loc de primul element
-- `realizareaUnuiNouVector.h:505` (`min = 9999`), `:520` (`max = -9999`), `:763`/`:776` (`±999999`).
+La `solutie9` același dezacord scapă nepedepsit doar pentru că `0` nu are cifre de parcurs (`while (n != 0)` nu intră deloc), deci nu influențează min/max. **Ce înveți:** `d` și acoladele sunt aceeași informație scrisă de două ori — la fiecare modificare a datelor de test, numeri elementele și corectezi `d`. B1 și B3 sunt, de fapt, aceeași greșeală în două direcții: acolo acoladele aveau mai mult decât `d`, aici `d` are mai mult decât acoladele.
 
-Dacă toate elementele sunt peste 9999, minimul „găsit" e 9999 — un număr care nu există în vector. Pattern-ul corect: pornești cu `v[0]` și compari de la `i = 1`. Nu are cum să dea greș, indiferent de valori.
+### B4 — `solutie33` (P5, munte pe pătrat perfect): ambele intervale de sortare sunt greșite cu 1
+- `exercitiiRecapitulative.h:958` — `sortatCrescatorInterval(v, 0, i)` include chiar pătratul perfect în prefix
+- `exercitiiRecapitulative.h:959` — `sortatDescrescatorInterval(v, i + 1, d)` — `finish = d` atinge `v[d]`, dincolo de vector
 
-### M7 — `solutie3b` din tema2 e neterminată
-- `tema2.h:529` — `int desc = 0;//descompunere factori primi?`
+Funcțiile tale de interval sortează `[start, finish]` *inclusiv* (bucla `i < finish` compară `v[i]` cu `v[i+1]`, deci atinge `v[finish]`). De aici două probleme:
 
-Corpul condiției e gol. Descompunerea există deja implementată în `corectareTema2.h:79` (`afisareDescompunereFactoriPrimi`) — de refolosit, nu de rescris.
+1. Prefixul sortat e `[0..i]`, cu tot cu pătratul perfect. Pe datele tale (`16` e maximul prefixului) iese bine **din noroc**; pe `{20,3,16,2,9,1}` sortarea `[0..2]` dă `{3,16,20}` — pătratul alunecă de pe vârf și muntele e stricat (`3 16 20 9 2 1` în loc de `3 20 16 9 2 1`).
+2. Sufixul `[i+1..d]` atinge `v[d]` = element fantomă `0`. Azi `0` e mai mic decât toate și rămâne ultimul — invizibil. Cu un element negativ în sufix (`{7,3,16,2,-9,1}`), `0`-ul fantomă ar fi sortat *înăuntru* și `-9` împins afară din vector.
+
+**Ce înveți:** exact capcana notată în fișă la Modulul 4 — `finish` trebuie să fie *ultimul index valid*, nu dincolo de el. Apelurile corecte: `sortatCrescatorInterval(v, 0, i - 1)` și `sortatDescrescatorInterval(v, i + 1, d - 1)`. Comparație utilă: în `solutie21` (4.4) ai apelat cu `d - 1` și e corect — aceeași mână a scris ambele, diferența e doar atenția la contractul funcției.
 
 ---
 
-## 🟢 Cleanups (stil)
+## 🟡 Importante
 
-- **C1 — duplicare masivă:** bubble sort e rescris de ~8 ori în `tema3.h` (`sortatPrinBubbleSortDescrescator:8`, `sortatCrescatorPartial:182`, `BubbleSortCrescator:356`, `sortatCrescatorSuma:460`, `sortatCrescator:494`, `sortatCrescatorPrimaCifra:550`…). Diferă doar *criteriul de comparație* — semn că o singură funcție + criteriu ar fi de ajuns; până la funcții cu parametru-criteriu, măcar una crescător + una descrescător, refolosite.
-- **C2 — `if (cond) return true; return false;`** → `return cond;` (`tema2.h:117-121`, `realizareaUnuiNouVector.h:141-144`, `corectareTema2.h:31-34` și în multe alte locuri).
-- **C3 — bool cu 0/1:** `bool vf = 1` (`tema2.h:176`), `vf == 1` (`corectareTema2.h:51`), `while (sortat == false)`. Folosește `true`/`false` și `while (!sortat)`.
-- **C4 — nume înșelătoare:** `bubbleSortPatratPerfectCrescator` (`tema3.h:282`) și `sortareaPrinSelectie` (`sortareaVectorilor.h:19`) sunt de fapt exchange sort (swap direct între i și j), nu bubble/selection; `primCifEgalultimCif` (`tema2.h:108`) — capitalizare inconsecventă.
-- **C5 — cod mort:** `cmmmc` din `tema2.h:651` nu e apelat nicăieri; `baza2`/`ctCifre1` la finalul `MunteVale.h:132-155`; `int poz = i + 1` nefolosit (`tema2.h:641`, `corectareTema2.h:234`); `int aux` nefolosit în `ogl` (`realizareaUnuiNouVector.h:375`); `;;` dublu (`exercitiiVectori.h:49`).
-- **C6 — `patratPerfect` cu comparație float:** `sqrt(n) == (int)sqrt(n)` (`tema3.h:278`, `corectareTema2.h:66`) e fragil pe valori mari. Mai sigur: `int r = (int)round(sqrt(n)); return r * r == n;` — ai deja varianta cu `radacina * radacina == n` în `tema2.h:514-521`, aceea e cea bună.
-- **C7 — `min`/`max` ca nume de funcții proprii** (`realizareaUnuiNouVector.h:762,775`) intră în coliziune cu `std::min`/`std::max` sub `using namespace std` — merge acum, dar e o sursă clasică de erori criptice; `minim`/`maxim` erau nume mai sigure.
+### M1 — `descompunereFactoriPrimi`: un element prim se afișează `7=1`
+- `exercitiiRecapitulative.h:383-399` — bucla merge `k <= aux/2`, apoi tipărește mereu `*1`
+
+Pentru un `n` prim (de ex. `7`, care nu e pătrat perfect, deci intră la afișare), niciun `k ≤ n/2` nu îl divide → se tipărește doar `7=1`, fără factorul `7^1`. Datele tale `{12,16,18}` nu ating cazul, dar prima temă cu un prim în vector îl atinge. Fix de mecanism: după buclă, dacă `n > 1`, ce a rămas în `n` e un factor prim → tipărește `n^1`. Bonus de format: fișa cere `12=2^2*3^1`, codul scoate `12=2^2*3^1*1` — coada `*1` există doar ca să închidă `*`-ul; dacă tratezi restul `n > 1`, dispare natural.
+
+### M2 — `solutie16` (3.3): oglinditul e verificat într-o singură direcție
+- `exercitiiRecapitulative.h:466` — `if (v[i] == oglindit(v[j]))`
+
+Pare simetric, dar nu e — din cauza zerourilor finale. Perechea `(120, 21)`: `oglindit(120) = 21`, deci „un element este oglinditul celuilalt" e adevărat; codul însă verifică doar `120 == oglindit(21)`, adică `120 == 12` → fals, perechea e ratată. Condiția completă: `v[i] == oglindit(v[j]) || v[j] == oglindit(v[i])`.
+
+### M3 — funcții duplicate între headere (reportat din runda 2, acum și mai apăsat)
+`exercitiiRecapitulative.h` redefinește `prim`, `afisare`, `oglindit`, `palindrom`, `sumaCifrelor`, `cifControl`, `cmmdc`, `patratPerfect`, `stergereElement`, `inserareElement` — toate există deja în celelalte headere. Merge doar cât timp `vectori.cpp` include un singur header; la două, `function redefinition`. Rămâne valabilă soluția: un `utile.h` cu cărămizile comune.
+
+---
+
+## 🟢 Cleanups
+
+- **C1 — `;;` dublu:** `exercitiiRecapitulative.h:228` și `:274` (`int d = 4;;`).
+- **C2 — `stergereElement` copiază un element de dincolo de `d`:** `exercitiiRecapitulative.h:710` — `for (i = poz; i < d; i++) v[i] = v[i+1]` citește `v[d]`. Azi inofensiv (capacitate 100), dar contractul corect e `i < d - 1`.
+- **C3 — variabilă moartă:** `ct` în `solutie32` (`exercitiiRecapitulative.h:934,939`) e incrementat și nefolosit — numărul de rămase e chiar `d`.
+- **C4 — `patratPerfect` pe float** (`exercitiiRecapitulative.h:380`): `sqrt(n) == (int)sqrt(n)` — reportat; varianta robustă `rad * rad == n` există deja în `tema4.h:167`.
+- **C5 — `medieAritmetica`:** garda `d == 0` stă după buclă (`exercitiiRecapitulative.h:17`) — pune-o prima; iar media e trunchiată la `int` (`:21`) — pentru „strict mai mare" rezultatul iese identic (demonstrabil), dar la „mai mic decât media" trunchierea ar da alt răspuns. Păstrează media în `double`.
+- **4.6 (`solutie23`) e neatacat** — doar afișare, marcat de tine la întrebări. Vezi mai jos.
 
 ---
 
@@ -113,20 +99,25 @@ Corpul condiției e gol. Descompunerea există deja implementată în `corectare
 
 | # | Before (actual) | After (corect) |
 |---|---|---|
-| B1 | `return a * b / (a, b);` | `return a * b / cmmdc(a, b);` |
-| B2 | `v[i] % 2 == v[i-1] % 2 == v[i+1] % 2` | `v[i] % 2 == v[i-1] % 2 && v[i-1] % 2 == v[i+1] % 2` |
-| B3 | `if (v[i + 1] != 0 && v[i - 1] >= 1)` | `if (i > 0 && i < d - 1)` |
-| B4 | `while (a != b) { if (a > b) a = a - b; if (b > a) b = b - a; }` | `while (b != 0) { int r = a % b; a = b; b = r; }` |
-| B5 | `int v[100] = { 5 }; int d = 5;` + `for (i = 0; i < d; i++)` cu `v[i+1]` | `int v[100] = { 5, 8, 9, 14, 25 }; int d = 5;` + `for (i = 0; i < d - 1; i++)` |
-| B6 | `for (int i = 0; i < d; i++)` cu `nrCifre(v[i + 1])` | `for (int i = 0; i < d - 1; i++)` |
-| B7 | `sortatPrinBubbleSort(aux, ct); afisare(v, d);` | `sortatPrinBubbleSort(aux, ct); afisare(aux, ct);` |
-| B8 | `int v[100] = { 8, 9, 9, 4, 5, 7 }; int d = 8;` | `int d = 6;` |
+| B1 | `while (v[ct] == v[ct + 1])` | `while (ct < d - 1 && v[ct] == v[ct + 1])` |
+| B2 | `if (prim(v[i]) && v[i] > v[i+1])` swap în vectorul mare | extrage primele în `aux` + pozițiile în `poz` → sortează `aux` → `v[poz[k]] = aux[k]` |
+| B3 | `int v[100] = { 89,22,51 }; int d = 4;` | `int d = 3;` (sau al 4-lea element în acolade) |
+| B4 | `sortatCrescatorInterval(v, 0, i);`<br>`sortatDescrescatorInterval(v, i + 1, d);` | `sortatCrescatorInterval(v, 0, i - 1);`<br>`sortatDescrescatorInterval(v, i + 1, d - 1);` |
+
+---
+
+## Întrebările tale — 4.2 și 4.6
+
+Ai marcat exact soluțiile cu problema cea mai interesantă din fișă, deci întrebarea e bine pusă.
+
+**4.2** — vezi B2. Ideea de reținut: nu poți sorta „printre" alte elemente cu swap de vecini, pentru că vecinul în vectorul mare nu e vecinul în subșir. Subșirul trebuie scos afară, sortat la el acasă, pus înapoi pe pozițiile memorate.
+
+**4.6** — e *același* tipar, aplicat de două ori: o extragere pentru pare (sortate crescător), o extragere pentru impare (sortate descrescător), apoi fiecare listă se toarnă înapoi pe pozițiile de unde a fost scoasă. Ai deja toate cărămizile: bubble sort crescător, descrescător, și — după ce corectezi 4.2 — mecanismul extrage/pune-înapoi. Încearcă-l singur întâi pe 4.2, apoi 4.6 iese aproape de la sine.
 
 ---
 
 ## Q&A — verifică-ți înțelegerea
 
-1. Ce valoare are expresia `(a, b)` în C++ și de ce `a * b / (a, b)` compilează fără eroare, deși calculează greșit?
-2. Pentru trei numere pare, ce valoare are `v[i]%2 == v[i-1]%2 == v[i+1]%2` pas cu pas? De ce rezultatul e `false` exact în cazul „toate au aceeași paritate"?
-3. De ce cmmdc-ul prin scăderi repetate se blochează când unul dintre numere e 0, iar varianta cu `%` (Euclid) nu? Urmărește ambele pe hârtie cu (45, 0).
-4. Dacă în `vectori.cpp` incluzi și `dublete.h` și `tema2.h`, ce eroare dă compilatorul și de ce `#pragma once` nu te ajută aici?
+1. La `solutie6`, tabelul tău de urmărire (liniile 136–142) se oprește la `ct=5`, dar programul afișează `valoare 1, lungime 4`. Ce anume citește while-ul dincolo de `d` și de ce valorile alea există în memorie deși „nu fac parte" din vector?
+2. Rulează pe hârtie prima trecere din `solutie19` pe `{29,12,7,113,4}`. Unde ajunge `12` după primele două swap-uri și ce regulă din enunț încalcă mutarea lui?
+3. La `solutie33`, funcția `sortatDescrescatorInterval(v, i+1, d)` atinge `v[d]`. De ce pe datele tale rezultatul iese totuși corect, și ce s-ar întâmpla dacă vectorul ar conține un număr negativ după pătratul perfect?
