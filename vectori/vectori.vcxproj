@@ -146,6 +146,7 @@
     <ClInclude Include="dublete.h" />
     <ClInclude Include="exercitiiRecapitulative.h" />
     <ClInclude Include="exercitiiVectori.h" />
+    <ClInclude Include="frecventa.h" />
     <ClInclude Include="MunteVale.h" />
     <ClInclude Include="realizareaUnuiNouVector.h" />
     <ClInclude Include="sortareaVectorilor.h" />

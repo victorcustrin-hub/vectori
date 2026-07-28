@@ -53,5 +53,8 @@
     <ClInclude Include="exercitiiRecapitulative.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="frecventa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
