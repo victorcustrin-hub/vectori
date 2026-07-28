@@ -586,7 +586,7 @@ void bubbleSortCrescatorSumaCifre(int v[], int d) {
 
 void solutie20() {
 	int v[100] = { 89,22,51};
-	int d = 4;
+	int d = 3;
 
 
 	bubbleSortCrescatorSumaCifre(v, d);
@@ -691,13 +691,50 @@ void solutie22() {
 //
 
 //4.6
+void SortarePrinSelectieNumerePare(int v[], int d) {
+
+	for (int i = 0;i < d;i++) {
+		if (v[i] % 2 == 0) {
+			for (int j = i + 1;j < d;j++) {
+				if (v[j] % 2 == 0) {
+					if (v[i] > v[j]) {
+						int aux = v[i];
+						v[i] = v[j];
+						v[j] = aux;
+					}
+				}
+			}
+		}
+	}
+
+}
+
+void SortarePrinSelectieNumereImpare(int v[], int d) {
+	
+	for (int i = 0;i < d;i++) {
+		if (v[i] % 2 != 0) {
+			for (int j = i + 1;j < d;j++) {
+				if (v[j] % 2 != 0) {
+					if (v[i] < v[j]) {
+						int aux = v[i];
+						v[i] = v[j];
+						v[j] = aux;
+					}
+				}
+			}
+		}
+	}
+
+}
+
 void solutie23() {
 	int v[100] = { 5,4,3,2,1,6 };
 	int d = 6;
 
-    
+	SortarePrinSelectieNumerePare(v, d);
+	SortarePrinSelectieNumereImpare(v, d);
 	afisare(v, d);
-	cout << endl;
+
 }
 //
 
@@ -968,21 +1005,3 @@ void solutie33() {
 //
 
 //CORECATREA TEMEI
-
-//4.2
-void solutie4_2() {
-	int v[100] = { 29,12,7,113,4 };
-	int d = 5;
-
-	for (int i = 0;i < d;i++) {
-		if (prim(v[i])) {
-			for (int j = i + 1;j < d;j++) {
-				if (prim(v[j])) {
-
-				}
-			}
-		}
-	}
-
-
-}
