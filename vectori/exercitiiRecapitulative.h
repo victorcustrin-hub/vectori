@@ -968,3 +968,4 @@ void solutie33() {
 		afisare(v, d);
 	}
 }
+//
