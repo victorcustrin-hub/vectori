@@ -811,8 +811,160 @@ void solutie28() {
 	}
 	afisare(v, d);
 }
+//
+
+//P1
+void bubbleSortDescrescatorSumaCifre(int v[], int d) {
+	bool sortat = true;
+
+	do {
+		sortat = true;
+		for (int i = 0;i < d - 1;i++) {
+			if (sumaCifrelor(v[i]) < sumaCifrelor(v[i + 1])) {
+				int aux = v[i];
+				v[i] = v[i + 1];
+				v[i + 1] = aux;
+				sortat = false;
+			}
+		}
+
+	} while (sortat == false);
+
+}
+
+void solutie29() {
+	int v[100] = { 121,45,707,33,89 };
+	int d = 5;
+	int nou[100];
+	int ct = 0;
 
 
+	for (int i = 0;i < d;i++) {
+		if (palindrom(v[i])) {
+			nou[ct] = v[i];
+			ct++;
+		}
+	}
 
+	bubbleSortDescrescatorSumaCifre(nou,ct);
+	
+	afisare(nou, ct);
 
+}
+//
 
+//P2
+int alipire(int a, int b) {
+	int aux = b;
+	int p = 1;
+
+	while (aux > 0) {
+		p = p * 10;
+		aux = aux / 10;
+	}
+
+	if (b == 0) {
+		p = 10;
+	}
+
+	return a * p + b;
+}
+
+void solutie30() {
+	int v[100] = { 1,3,20,7 };
+	int d = 4;
+
+	for (int i = 0;i < d - 1;i++) {
+		if (prim(alipire(v[i], v[i + 1]))) {
+			cout << v[i] << " " << v[i + 1] << endl;
+		}
+	}
+
+}
+//
+
+//P3
+int cmmmc(int a, int b) {
+	if (a == 0 || b == 0) {
+		return 0;
+	}
+
+	return (a / cmmdc(a, b)) * b;
+}
+
+void solutie31() {
+	int v[100] = { 4,5,6,8,12 };
+	int d = 5;
+	int rez = -1;
+
+	for (int i = 0; i < d; i++) {
+		if (v[i] % 2 == 0) {
+			if (rez == -1) {
+				rez = v[i];
+			}
+			else {
+				rez = cmmmc(rez, v[i]);
+			}
+		}
+	}
+
+	cout << rez;
+
+}
+//
+
+//P4
+bool vfCifre(int n) {
+	
+	while (n != 0) {
+		int cif = n % 10;
+		if (cif == 0) {
+			return true;
+		}
+		n = n / 10;
+	}
+
+	return false;
+
+}
+
+void solutie32() {
+	int v[100] = { 12,40,305,7,88 };
+	int d = 5;
+	int ct = 0;
+
+	for (int i = 0; i < d; i++) {
+		if (vfCifre(v[i])) {
+			stergereElement(v, d, i);
+			ct++;
+			i--;
+		}
+	}
+	inserareElement(v, d, 0, d);
+	afisare(v, d);
+}
+//
+
+//P5
+void solutie33() {
+	int v[100] = { 7,3,16,2,9,1 };
+	int d = 6;
+	bool vf = false;
+	int ct = 0;
+
+	for (int i = 0; i < d; i++) {
+		if (patratPerfect(v[i])) {
+			vf = true;
+			sortatCrescatorInterval(v, 0, i);
+			sortatDescrescatorInterval(v, i + 1, d);
+			break;
+		}
+	}
+
+	if (vf == false) {
+		cout << "nu exista nici un patrat perfect in sirul de numere";
+	}
+	else {
+		afisare(v, d);
+	}
+}
