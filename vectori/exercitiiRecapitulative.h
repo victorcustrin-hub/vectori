@@ -142,7 +142,7 @@ void solutie5() {
 //   5<5 nu       
 void solutie6() {
 	int v[100] = { 2,5,5,5,1,1,1,1};
-	int d = 6;
+	int d = 8;
 
 	int lungimeMax = 1;
 	int valoare = v[0];
@@ -537,23 +537,20 @@ void solutie18() {
 //
 
 //4.2
-void bubbleSortCrescatornrPrime(int v[], int d) {
-	bool sortat = true;
+void sortarePrinSelectieNrPrime(int v[], int d) {
 
-	do {
-		sortat = true;
-		for (int i = 0;i < d - 1;i++) {
-
-			if (prim(v[i])&&v[i] > v[i + 1]) {
-				int aux = v[i];
-				v[i] = v[i + 1];
-				v[i + 1] = aux;
-				sortat = false;
+	for (int i = 0;i < d-1;i++) {
+		if (prim(v[i])) {
+			for (int j = i + 1;j < d;j++) {
+				if (prim(v[j])&&v[i] > v[j]) {
+					int aux = v[i];
+					v[i] = v[j];
+					v[j] = aux;
+				}
 			}
 		}
-
-	} while (sortat == false);
-
+		
+	}
 }
 
 void solutie19() {
@@ -561,7 +558,7 @@ void solutie19() {
 	int d = 5;
 
 
-	bubbleSortCrescatornrPrime(v, d);
+	sortarePrinSelectieNrPrime(v, d);
 	afisare(v, d);
 
 }
@@ -969,3 +966,23 @@ void solutie33() {
 	}
 }
 //
+
+//CORECATREA TEMEI
+
+//4.2
+void solutie4_2() {
+	int v[100] = { 29,12,7,113,4 };
+	int d = 5;
+
+	for (int i = 0;i < d;i++) {
+		if (prim(v[i])) {
+			for (int j = i + 1;j < d;j++) {
+				if (prim(v[j])) {
+
+				}
+			}
+		}
+	}
+
+
+}
