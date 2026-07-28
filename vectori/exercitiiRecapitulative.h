@@ -8,21 +8,22 @@ using namespace std;
 int medieAritmetica(int v[], int d) {
 	double suma = 0;
 
-	for (int i = 0;i < d;i++) {
-		suma = suma + v[i];
-	}
-
 	if (d == 0) {
 		return 0;
 	}
 
-	return suma/d;
+	for (int i = 0;i < d;i++) {
+		suma = suma + v[i];
+	}
+
+
+	return suma / d;
 }
 
 void solutie1() {
 	int v[100] = { 13,19,32,54,99 };
 	int d = 5;
-	int medie = medieAritmetica(v, d);
+	double medie = medieAritmetica(v, d);
 	int ct = 0;
 
 	for (int i = 0;i < d;i++) {
@@ -223,7 +224,7 @@ bool palindrom(int n) {
 
 void solutie8() {
 	int v[100] = { 121,45,707,89 };
-	int d = 4;;
+	int d = 4;
 
 	for (int i = 0;i < d;i++) {
 		if (palindrom(v[i])) {
@@ -269,7 +270,7 @@ int cifraMaxVector(int v[], int d) {
 
 void solutie9() {
 	int v[100] = { 32,250,216 };
-	int d = 4;;
+	int d = 4;
 
 
 	cout <<"Cifra minima "<< cifraMinVector(v, d)<<", cifra maxima " << cifraMaxVector(v, d) << endl;
@@ -466,7 +467,7 @@ void solutie16() {
 
 	for (int i = 0;i < d - 1;i++) {
 		for (int j = i + 1;j < d;j++) {
-			if (v[i] == oglindit(v[j])) {
+			if (v[i] == oglindit(v[j]) || v[j]== oglindit(v[i])) {
 				cout << v[i] << " " << v[j] << endl;
 			}
 		}
@@ -744,7 +745,7 @@ void solutie23() {
 //5.1
 void stergereElement(int v[], int& d, int poz) {
 
-	for (int i = poz;i < d;i++) {
+	for (int i = poz;i < d - 1;i++) {
 		v[i] = v[i + 1];
 	}
 	d--;
@@ -968,12 +969,10 @@ bool vfCifre(int n) {
 void solutie32() {
 	int v[100] = { 12,40,305,7,88 };
 	int d = 5;
-	int ct = 0;
 
 	for (int i = 0; i < d; i++) {
 		if (vfCifre(v[i])) {
 			stergereElement(v, d, i);
-			ct++;
 			i--;
 		}
 	}
