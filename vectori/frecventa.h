@@ -3,6 +3,8 @@
 #include <cmath>
 using namespace std;
 
+//1e
+
 void frecventaCifraNumar(int numar) {
 
 	int f[10]{};
@@ -119,7 +121,7 @@ void solutie1b() {
 //1c
 void solutie1c() {
 	int v[100] = { 12,67,23,98,43,99 };
-	int d = 5;
+	int d = 6;
 	int f[101]{};
 	
 	for (int i = 0;i < d;i++) {
@@ -134,4 +136,79 @@ void solutie1c() {
 		}
 	}
 
+}
+//
+
+//1d
+void solutie1d() {
+	int v[100] = { 12,67,23,98,43,99 };
+	int d = 6;
+	int f[10] = {0};
+
+	for (int i = 0; i < d; i++) {
+		int nou = v[i];
+
+		if (nou == 0) {
+			f[0] = 1;
+		}
+
+		while (nou > 0) {
+			int ultimaCif = nou % 10;
+			f[ultimaCif] = 1;
+			nou = nou / 10;
+		}
+	}
+
+	cout << "cifrele care nu apar in elementele vectorului sunt: ";
+	for (int i = 0; i <= 9; i++) {
+		if (f[i] == 0) {
+			cout << i << " ";
+		}
+	}
+	cout << endl;
+}
+//
+
+//
+void solutie1e() {
+	int v[100] = { 12,67,23,98,43,99 };
+	int d = 6;
+	int min = v[0];
+	int f[10] = { 0 };
+
+	for (int i = 1; i < d; i++) {
+		if (v[i] < min) {
+			min = v[i];
+		}
+	}
+
+	int fr_minim = 0;
+	for (int i = 0; i < d; i++) {
+		if (v[i] == min) {
+			fr_minim++;
+		}
+	}
+
+
+	for (int i = 0; i < d; i++) {
+		int nou = v[i];
+		while (nou != 0) {
+			int cif = nou % 10;
+			f[cif]++;
+			nou = nou / 10;
+		}
+	}
+
+	int cifMax = -1;
+	for (int i = 9; i >= 0; i--) {
+		if (f[i] != 0) {
+			cifMax = i;
+			break;
+		}
+	}
+
+	cout << "elementul minim este " << min << " si apare de " << fr_minim << " ori" << endl;
+	if (cifMax != -1) {
+		cout << "Cifra maxima este " << cifMax << " si apare de " << f[cifMax] << " ori." << endl;
+	}
 }
