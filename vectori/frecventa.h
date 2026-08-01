@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-//1e
+//1e,2e
 
 void frecventaCifraNumar(int numar) {
 
@@ -212,3 +212,154 @@ void solutie1e() {
 		cout << "Cifra maxima este " << cifMax << " si apare de " << f[cifMax] << " ori." << endl;
 	}
 }
+//
+
+//2a
+
+void frecventaCif(int n,int f[]) {
+	while (n != 0) {
+		int cif = n % 10;
+		f[cif]++;
+		n = n / 10;
+	}
+}
+
+void solutie2a() {
+	int n = 2534782;
+	int f[10]={0};
+
+	frecventaCif(n,f);
+
+	for (int i = 0;i < 10;i++) {
+		cout << i << " apare de " << f[i] << " ori" << endl;
+	}
+}
+//
+
+//2b
+void solutie2b() {
+	int n = 122233335;
+	int k = 3;
+	int f[10] = { 0 };
+
+	frecventaCif(n, f);
+
+	for (int i = 0;i < 10;i++) {
+		if (f[i] > k) {
+			cout << i << " apare de " << f[i] << " ori, cu "<< f[i] - k<<" ori mai mult decat k="<< k  << endl;
+		}
+	}
+}
+//
+
+//2c
+void solutie2c() {
+	int n = 24680;
+	int f[10] = { 0 };
+	int aux = n;
+	
+	frecventaCif(n, f);
+	int nou = 0;
+
+	for (int i = 1; i <= 9; i = i+2) {
+		if (f[i] == 0) {
+			nou = nou * 10 + i;
+		}
+	}
+	cout << nou;
+}
+//
+
+//2d
+void solutie2d() {
+	int n = 14371252;
+	int f[10] = { 0 };
+
+	frecventaCif(n, f);
+	
+	int nou = 0;
+
+	for (int i = 9; i >= 0; i--) {
+		int ct = f[i];
+		if (ct > 2) {
+			ct = 2;
+		}
+
+		for (int j = 1; j <= ct; j++) {
+			nou = nou * 10 + i;
+		}
+	}
+	cout << nou;
+}
+//
+
+//2e
+void solutie2e() {
+	int n = 1432313;
+	int f[10] = { 0 };
+
+	int aux = n;
+	frecventaCif(aux, f);
+
+	int fMax = 0;
+	for (int i = 0; i <= 9; i++) {
+		if (f[i] > fMax) {
+			fMax = f[i];
+		}
+	}
+
+	int cif = 0;
+	for (int i = 0; i <= 9; i++) {
+		if (f[i] > 0) {
+			cif = cif + (fMax - f[i]);
+		}
+	}
+
+	cout << cif;
+}
+//
+
+//2f
+void afisare(int v[], int d) {
+
+	for (int i = 0;i < d;i++) {
+		cout << v[i] << " ";
+	}
+
+}
+
+void solutie2f() {
+	int n = 2341;
+	int f[10] = { 0 };
+	int nou[100];
+	int ct = 0;
+   
+	frecventaCif(n, f);
+
+	for (int i = 1;i <= 9;i++) {
+		if ((i == 2 || i == 3 || i == 5 || i == 7) && f[i] == 0) {
+			nou[ct]=i;
+			ct++;
+		}
+	}
+	afisare(nou, ct);
+}
+//
+
+//2g
+void solutie2g() {
+	int n = 431245;
+	int f[10] = { 0 };
+
+	frecventaCif(n, f);
+	int nou = 0;
+	for (int i = 1;i < 10;i++) {
+		for (int j = 1; j <= f[i]; j++) {
+			nou = nou * 10 + i;
+		}
+	}
+
+	cout << nou;
+
+}
+//
