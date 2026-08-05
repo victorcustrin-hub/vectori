@@ -39,13 +39,15 @@ void ceaMaiLungaSecventaDeNumereImpare(int v[], int dim) {
     }
 }
 
-void solutie1() {
+void solutie() {
     int v[100] = { 2,4,5,7,11,19,24,21,31,41 };
     int d = 10;
     
     ceaMaiLungaSecventaDeNumereImpare(v, d);
 }
+//
 
+//#516
 // vector cu n elemente,Calculați suma elementelor din secvența determinată de primul și ultimul element impar.
 void secventaPrimulSiUltimulNumarImpar(int v[], int d) {
     int primul = -1;
@@ -71,12 +73,14 @@ void secventaPrimulSiUltimulNumarImpar(int v[], int d) {
     }
 }
 
-void solutie2() {
+void solutie516() {
     int v[100] = { 12,10,15,6,7,10,19,14 };
     int d = 8;
     secventaPrimulSiUltimulNumarImpar(v, d);
 }
+//
 
+//#518
 //Determinați cea mai lungă secvență de elemente nule din vector.
 //Dacă în vector există mai multe secvențe de elemente nule de lungime maximă se va determina cea mai din stânga.
 void secventaElementeNuleMaxima(int v[], int d) {
@@ -101,9 +105,42 @@ void secventaElementeNuleMaxima(int v[], int d) {
     cout << smax << " " << dmax;
 }
 
-void solutie3() {
+void solutie518() {
     int v[100] = { 0,1,0,0,0,3,0,0,0,2 };
     int d = 10;
 
     secventaElementeNuleMaxima(v, d);
+}
+//
+
+//#523
+//determinati cea mai lungă secvență de elemente egale din vector. 
+//Dacă în vector există mai multe secvențe de elemente egale de lungime maximă se va determina cea mai din dreapta.
+void secventaElementeEgale(int v[], int d) {
+    int smax = 1;
+    int dmax = 0;
+
+    for (int i = 0;i < d;i++) {
+        int j = i;
+        while (j + 1 < d && v[j + 1] == v[i]) {
+            j++;
+        }
+
+        if (j - i >= dmax - smax) {
+            smax = i + 1;
+            dmax = j + 1;
+        }
+        i = j;
+    }
+
+    cout << smax << " " << dmax << endl;
+
+}
+
+void solutie523() {
+    int v[100] = { 5,5,1,1,1,1,2,2,2,2 };
+    int d = 10;
+
+    secventaElementeEgale(v, d);
+
 }
