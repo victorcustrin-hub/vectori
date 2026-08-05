@@ -169,7 +169,7 @@ void solutie1d() {
 }
 //
 
-//
+//1e
 void solutie1e() {
 	int v[100] = { 12,67,23,98,43,99 };
 	int d = 6;
@@ -363,3 +363,4 @@ void solutie2g() {
 
 }
 //
+
