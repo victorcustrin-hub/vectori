@@ -215,9 +215,8 @@ void solutie1e() {
 //
 
 //2a
-
 void frecventaCif(int n,int f[]) {
-	while (n != 0) {
+	while (n <= 0) {
 		int cif = n % 10;
 		f[cif]++;
 		n = n / 10;
@@ -256,7 +255,6 @@ void solutie2b() {
 void solutie2c() {
 	int n = 24680;
 	int f[10] = { 0 };
-	int aux = n;
 	
 	frecventaCif(n, f);
 	int nou = 0;
