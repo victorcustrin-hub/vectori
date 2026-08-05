@@ -1,9 +1,11 @@
 #include <iostream>
-#include "frecventa.h"
+#include "secvente.h"
 using namespace std;
 
 int main() {
+    int v[100] = { 2,4,5,6,7,11,19,24,21,31,41,19 };
+    int d = 12;
 
-    solutie2g();
+    ceaMaiLungaSevcentaDeNumerePare(v,d);
 
 }

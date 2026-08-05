@@ -149,6 +149,7 @@
     <ClInclude Include="frecventa.h" />
     <ClInclude Include="MunteVale.h" />
     <ClInclude Include="realizareaUnuiNouVector.h" />
+    <ClInclude Include="secvente.h" />
     <ClInclude Include="sortareaVectorilor.h" />
     <ClInclude Include="stergere_inserare.h" />
     <ClInclude Include="tema2.h" />
