@@ -76,11 +76,11 @@ void solutie1a() {
 		f[v[i]]++;
 	}
 
-	int maxi = pozElemMaxVec(f, 100);
-	int min = pozElemMinVec(f, 100);
+	int maxi = pozElemMaxVec(f, 101);
+	int min = pozElemMinVec(f, 101);
 
-	cout << "Maximul din vector este " << maxi << " si apare de " << f[maxi] << " ori" << endl;
-	cout << "Minimul  din vector este " << min << " si apare de " << f[min] << " ori" << endl;
+	cout << "nr cel mai frecvent " << maxi << " si apare de " << f[maxi] << " ori" << endl;
+	cout << "cifra cu frecventa minime este " << min << " si apare de " << f[min] << " ori" << endl;
 
 
 }
@@ -113,8 +113,8 @@ void solutie1b() {
 	}
 	int minim = pozElemMinVec(f, 10);
 	int maxim = pozElemMaxVec(f, 10);
-	cout << "Frecventa minima = " << minim << endl;
-	cout << "Frecventa maxima = " << maxim << endl;
+	cout << "cifra cu frecventa minima = " << minim << endl;
+	cout << "cifra cu recventa maxima = " << maxim << endl;
 }
 //
 

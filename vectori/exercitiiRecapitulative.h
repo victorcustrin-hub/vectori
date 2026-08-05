@@ -5,7 +5,7 @@ using namespace std;
 
 
 //1.1
-int medieAritmetica(int v[], int d) {
+double medieAritmetica(int v[], int d) {
 	double suma = 0;
 
 	if (d == 0) {
@@ -150,7 +150,7 @@ void solutie6() {
 		int lungime = 1;
 		if (v[i] == v[i + 1]) {
 			int ct = i;
-			while (v[ct] == v[ct + 1]) {
+			while (v[ct] == v[ct + 1] && ct < d-1) {
 				lungime++;
 				ct++;
 			}
@@ -270,7 +270,7 @@ int cifraMaxVector(int v[], int d) {
 
 void solutie9() {
 	int v[100] = { 32,250,216 };
-	int d = 4;
+	int d = 3;
 
 
 	cout <<"Cifra minima "<< cifraMinVector(v, d)<<", cifra maxima " << cifraMaxVector(v, d) << endl;
@@ -376,7 +376,7 @@ void solutie12() {
 
 //2.7
 bool patratPerfect(int n) {
-	return sqrt(n) == (int)sqrt(n);
+	return sqrt(n) * sqrt(n) == n;
 }
                                
 void descompunereFactoriPrimi(int n) {

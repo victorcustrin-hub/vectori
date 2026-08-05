@@ -1,9 +1,9 @@
 #include <iostream>
-#include "frecventa.h"
+#include "exercitiiRecapitulative.h"
 using namespace std;
 
 int main() {
 
-	solutie1a();
+	cout<<patratPerfect(15);
 
 }
