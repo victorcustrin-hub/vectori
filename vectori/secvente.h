@@ -144,3 +144,51 @@ void solutie523() {
     secventaElementeEgale(v, d);
 
 }
+//
+
+//#981
+//determinati lungimea maximă a unei secvenţe de numere care în scrierea binară au numai cifra 1.
+bool nr1InBaza2(int n) {
+    int ct = 0;
+    int total = 0;
+
+    while (n != 0) {
+        total++;
+        if (n % 2 == 1) {
+            ct++;
+        }
+        n = n / 2;
+    }
+    if (ct == total) {
+        return true;
+    }
+    return false;
+}
+
+void secventaScriereBinara(int v[], int d) {
+    int lungime = 0;
+    int lMax = 0;
+
+    for (int i = 0;i < d;i++) {
+        if (nr1InBaza2(v[i])) {
+            int j = i;
+            while (j + 1 < d && nr1InBaza2(v[j + 1])) {
+                j++;
+            }
+
+            int lungime = j - i + 1;
+            if (lungime > lMax) {
+                lMax = lungime;
+            }
+            i = j;
+        }
+    }
+    cout << lMax << endl;
+}
+
+void solutie981() {
+    int v[100] = {4,6,7,15,88};
+    int d = 5;
+    secventaScriereBinara(v, d);
+}
+//
