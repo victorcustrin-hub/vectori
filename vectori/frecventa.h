@@ -22,13 +22,13 @@ void frecventaCifraNumar(int numar) {
 
 //algoritm de frecventa numar vector de 2 cifre din vector apare 10 de 3 ori
 void frecventaNumarVector(int v[],int d) {
-	int f[100]{};
+	int f[101]{};
 
 	for (int i = 0;i < d;i++) {
 		f[v[i]]++;
 	}
 	
-	for (int i = 10;i < 99;i++) {
+	for (int i = 10;i <= 99;i++) {
 		if(f[i]!=0)
 		cout << "in vector apare " << i << " de " << f[i] << " ori " << endl;
 	}
