@@ -3,9 +3,7 @@
 using namespace std;
 
 int main() {
-    int v[100] = { 2,4,5,7,11,19,24,21,31,41 };
-    int d = 12;
-
-    ceaMaiLungaSevcentaDeNumerePare(v,d);
-
+    int v[100] = { 12, 10, 15, 6, 7, 10, 19, 14 };
+    int d = 8;
+    secventaPrimulSiUltimulNumarImpar(v, d);
 }
