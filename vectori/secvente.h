@@ -21,10 +21,10 @@ void ceaMaiLungaSecventaDeNumereImpare(int v[], int dim) {
     int smax, dmax;
     smax = 1, dmax = 0;
     for (int i = 0; i < dim; i++){
-        if (v[i] % 2 == 1)
+        if (v[i] % 2 != 0)
         {
             int  j = i;
-            while (j + 1 < dim && v[j + 1] % 2 == 1) {
+            while (j + 1 < dim && v[j + 1] % 2 != 0) {
                 j++;
             }
                 
@@ -54,7 +54,7 @@ void secventaPrimulSiUltimulNumarImpar(int v[], int d) {
     int ultimul = -1;
 
     for (int i = 0;i < d;i++) {
-        if (v[i] % 2 == 1) {
+        if (v[i] % 2 != 0) {
             if (primul == -1) {
                 primul = i;
             }
@@ -154,7 +154,7 @@ bool nr1InBaza2(int n) {
 
     while (n != 0) {
         total++;
-        if (n % 2 == 1) {
+        if (n % 2 != 0) {
             ct++;
         }
         n = n / 2;
@@ -192,3 +192,10 @@ void solutie981() {
     secventaScriereBinara(v, d);
 }
 //
+
+//x,y doi vectori cu nr naturale. Să se verifice dacă vectorul y este secvență în vectorul x.
+void ySecventaInX(int x[], int y[], int dimX, int dimY) {
+    
+
+
+}
