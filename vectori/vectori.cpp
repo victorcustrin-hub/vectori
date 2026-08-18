@@ -1,7 +1,7 @@
 #include <iostream>
-#include "secvente.h"
+#include "tema5.h"
 using namespace std;
 
 int main() {
-    solutie981();
+    solutie4457();
 }

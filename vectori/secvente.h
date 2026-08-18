@@ -102,7 +102,12 @@ void secventaElementeNuleMaxima(int v[], int d) {
         }
 
     }
-    cout << smax << " " << dmax;
+    if (dmax == -1) {
+        cout << "Nu exista elemente nule in vector.";
+        return;
+   }
+    
+    cout << smax << " " << dmax << endl;
 }
 
 void solutie518() {
@@ -193,9 +198,4 @@ void solutie981() {
 }
 //
 
-//x,y doi vectori cu nr naturale. Să se verifice dacă vectorul y este secvență în vectorul x.
-void ySecventaInX(int x[], int y[], int dimX, int dimY) {
-    
 
-
-}
