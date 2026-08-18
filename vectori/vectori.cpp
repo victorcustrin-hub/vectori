@@ -1,7 +1,7 @@
 #include <iostream>
-#include "tema5.h"
+#include "exercitiiBac.h"
 using namespace std;
 
 int main() {
-    solutie4457();
+	sub2ex1d();
 }
