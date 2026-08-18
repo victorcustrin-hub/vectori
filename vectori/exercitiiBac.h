@@ -135,17 +135,32 @@ void sub2ex1d() {
 
 void sub3ex2() {
 	int n = 6;
-	int v[51] = {2,5,1,6,4,9};
+	int v[51] = {8,6,1,2,7,4};
 	int min = v[0];
-    int stanga = v[0];
-	int dreapta = v[n-1];
-	cout << dreapta;
-	
+	int poz = 0;
+	int stanga = 0;
+	int dreapta = n-1;
 	
 	for (int i = 0;i < n;i++) {
 		if (v[i] < min) {
 			min = v[i];
+			poz = i;
 		}
+	}
+
+	if (min % 2 == 0) {
+		int aux = v[poz];
+		v[poz] = v[stanga];
+		v[stanga] = aux;
+	}
+	else {
+		int aux = v[poz];
+		v[poz] = v[dreapta];
+		v[dreapta] = aux;
+	}
+
+	for (int i = 0;i < n;i++) {
+		cout << v[i] << " ";
 	}
 
 }
