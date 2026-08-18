@@ -96,7 +96,6 @@ void sub2ex1c() {
 
 //d)Scrieţi în pseudocod un algoritm, echivalent cu cel dat, înlocuind a doua
 //structură cât timp...execută cu o structură repetitivă cu test final.
-
 void sub2ex1d() {
 	int n, p;
 	int nr = 0;
@@ -119,4 +118,34 @@ void sub2ex1d() {
 		nr++;
 	}
 	cout << nr;
+}
+
+
+
+//SUBIECTUL III
+
+//2. Scrieți un program C/C++ care citește de la tastatură un număr natural, n (n∈[2,50]), și un șir de n numere
+//naturale din intervalul[0, 102], elemente ale unui tablou unidimensional.Programul transformă tabloul în
+//memorie, interschimbând elementul său de valoare minimă cu primul element al tabloului, dacă acest minim
+//este par, sau cu ultimul element al tabloului, dacă acest minim este impar.Dacă în tablou sunt mai multe
+//elemente de valoare minimă, se alege doar unul dintre acestea.Tabloul obținut este afișat pe ecran, cu
+//elementele separate prin câte un spațiu.
+//Exemplu: dacă n = 6, pentru tabloul(8, 6, 2, 2, 7, 4) se poate obține tabloul(2, 6, 8, 2, 7, 4)
+//iar pentru tabloul(8, 6, 1, 2, 7, 4) se obține tabloul(8, 6, 4, 2, 7, 1)
+
+void sub3ex2() {
+	int n = 6;
+	int v[51] = {2,5,1,6,4,9};
+	int min = v[0];
+    int stanga = v[0];
+	int dreapta = v[n-1];
+	cout << dreapta;
+	
+	
+	for (int i = 0;i < n;i++) {
+		if (v[i] < min) {
+			min = v[i];
+		}
+	}
+
 }

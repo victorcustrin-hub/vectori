@@ -3,5 +3,5 @@
 using namespace std;
 
 int main() {
-	sub2ex1d();
+	sub3ex2();
 }
