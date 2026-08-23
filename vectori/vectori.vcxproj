@@ -157,6 +157,7 @@
     <ClInclude Include="tema3.h" />
     <ClInclude Include="tema4.h" />
     <ClInclude Include="tema5.h" />
+    <ClInclude Include="tema6.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

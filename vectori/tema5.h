@@ -90,36 +90,49 @@ void solutie520() {
 //522
 //Se dă un vector cu n elemente, numere naturale, și un număr k.
 //Să se stabilească dacă în vector există două secvențe de lungime k identice.
-void verificaKSecventa1(int v[], int n, int k) {
-    bool vf = false;
 
-    for (int i = 0; i <= n; i++) {
-        for (int j = i + 1; j <= n - k; j++) {
-            if (v, i, j, k) {   //???
-                vf = true;
-                break;
+
+//v[100] = { 1, 3, 3, 3, 5, 2, 6, 6, 6, 4, 2 };         k = 3;    d=11;
+//  i      v[i]==v[i+1]      v[i]==v[j]&&j<d      ct       j       ct==k      nrSec
+//  0         false               -               -        -        -           0
+//  1         true                true            2        3        -           -
+//  -           -                 true            3        4        -           -
+//  -           -                 false           -        -
+bool secventeIdentice(int v[],int d, int k) {
+
+    int nrSec = 0;
+    for (int i = 0;i < d-1;i++) {
+        
+        if (v[i] == v[i + 1]) {
+
+            int j = i+1;
+            int ct = 1;
+            while (v[i] == v[j]&&j<d) {
+                ct++;
+                j++;
             }
+            if (ct == k) {
+                nrSec++;
+            }
+            i = j - 1;
         }
-        if (vf) {
-            break;
-        }
+        
     }
+  
+    return nrSec >=2;
+}
 
-    if (vf) {
+void solutie522() {
+    int v[100] = { 1, 3, 3, 3, 5, 2, 6, 6, 6, 4, 2 };
+    int d = 11;
+    int k = 3;
+
+    if (secventeIdentice(v, d, k)) {
         cout << "DA" << endl;
     }
     else {
         cout << "NU" << endl;
     }
-}
-
-void solutie522() {
-    int v[8] = { 1, 2, 3, 4, 2, 3, 4, 5 };
-    int n = 8;
-    int k = 3;
-
-    verificaKSecventa1(v, n, k);
-
 }
 //
 
@@ -576,8 +589,9 @@ void solutie524() {
 //Se dau n numere naturale, reprezentând elementele unui vector. Determinați lungimea maximă a unei 
 // secvențe de elemente divizibile cu 10, precum și numărul de secvențe de lungime maximă cu elemente 
 // divizibile cu 10.
-void secv10(int v[], int n) {
+void secvDivizibilCu10(int v[], int n) {
     int lmax = 0;
+    int ct = 0;
 
     for (int i = 0; i < n; i++) {
         if (v[i] % 10 == 0) {
@@ -590,13 +604,15 @@ void secv10(int v[], int n) {
             int lungime = j - i + 1;
             if (lungime > lmax) {
                 lmax = lungime;
+                ct++;
+            }
+            else if (lungime == lmax) {
+                ct++;
             }
 
             i = j;
         }
     }
-
-    int ct = 0;
 
 
     cout << "Lungimea max = " << lmax << endl;
@@ -604,10 +620,10 @@ void secv10(int v[], int n) {
 }
 
 void solutie4148() {
-    int v[100] = { 12, 20, 30, 7, 50, 60, 13, 90 };
-    int n = 8;
+    int v[100] = { 12, 20, 30,40, 7, 50, 60, 13, 90,100 };
+    int n = 10;
 
-    secv10(v, n);
+    secvDivizibilCu10(v, n);
 }
 //
 
@@ -617,22 +633,35 @@ void solutie4148() {
 // Pentru fiecare pereche de indici se calculează suma elementelor din secvență determinată de cei doi indici. 
 // Afișați suma maximă obținută.
 void solutie2921() {
-    int v[100] = { 0, 2, -3, 5, 4, -1, 6 };
-    int d = 6;
+    int v[100] = { 7, 9, - 6, 1, - 8 };
+    int d = 5;
     int m = 3;
-
-
-    int sp[100] = { 0 };
-    for (int i = 1; i <= d; i++) {
-        sp[i] = sp[i - 1] + v[i];
-    }
-
-
     int smax = -2000000000;
+    int stanga, dreapta;
 
-    for (int k = 0; k < m; k++) {
+    for (int i = 1; i <= m; i++) {
+       
+        cout << "i=";
+        cin >> stanga;
+        cout << "j=";
+        cin >> dreapta;
+        stanga--;
+        dreapta--;
+        int suma = 0;
+        if (stanga>dreapta) {
+            int aux = stanga;
+            stanga = dreapta;
+            dreapta = aux;
+        }
+        for (int j = stanga;j<=dreapta;j++) {
+            suma += v[j];
+        }
+        cout << "Suma din secventa i->j este ";
+        cout << suma << endl;
 
-      
+        if (suma > smax) {
+            smax = suma;
+        }
     }
 
     cout << "Suma maxima obtinuta din perechi este: " << smax << endl;

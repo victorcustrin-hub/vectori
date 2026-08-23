@@ -108,7 +108,7 @@ void sub2ex1d() {
 			do {
 				p = 1;
 				n = n / d;
-			} while (n % d != 0);
+			} while (n % d == 0);
 		}
 		nr = nr + p;
 		d = d + 1;
