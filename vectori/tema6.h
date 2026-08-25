@@ -343,7 +343,8 @@ void ceaMaiLungaSecventaParitatiDiferite(int v[], int d) {
         for (int k = smax; k <= dmax; k++) {
             cout << v[k] << " ";
         }
-        cout << "lungime: " << (dmax - smax + 1) << endl;
+        cout << endl;
+        cout << "lungime = " << (dmax - smax + 1) << endl;
     }
     else {
         cout << "Vectorul este gol." << endl;

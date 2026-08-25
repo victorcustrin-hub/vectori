@@ -1,7 +1,7 @@
 #include <iostream>
-#include "tema6.h"
+#include "cautareBinara.h"
 using namespace std;
 
 int main() {
-	solutie8();
+	verificare();
 }

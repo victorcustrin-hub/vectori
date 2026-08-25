@@ -68,5 +68,8 @@
     <ClInclude Include="tema6.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cautareBinara.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

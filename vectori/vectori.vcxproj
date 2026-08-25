@@ -142,6 +142,7 @@
     <ClCompile Include="vectori.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cautareBinara.h" />
     <ClInclude Include="corectareTema2.h" />
     <ClInclude Include="dublete.h" />
     <ClInclude Include="exercitiiBac.h" />
