@@ -1,3 +1,201 @@
+# Code Review — victor-vectori
+
+Un singur fișier, runda cea mai nouă sus. Rundele vechi rămân dedesubt.
+
+## Runde anterioare — index
+
+| rundă | subiect | fișier | stare |
+|---|---|---|---|
+| 7 | `cautareBinara.h` | *(aici, mai jos)* | 2 🔴 deschise |
+| 6 | `tema6.h` + fix-uri tema5/bac | `CODE_REVIEW_TEMA6.md` | 🔴 B1–B6 **toate deschise**, 🟡 M2a deschis |
+| 5 | tema5 + bac 2026 | `CODE_REVIEW_TEMA5_BAC.md` | preluate în runda 6 |
+| 4 | `secvente.h` | `CODE_REVIEW_SECVENTE.md` | ✅ închis |
+| 1–3 | vectori (fix-uri runde 4+5) | *(mai jos, sub runda 7)* | ✅ închise |
+
+---
+
+# Runda 7 — 2026-09-08 — sha `589651f`
+
+Fișier nou: `vectori/cautareBinara.h` (68 linii) + `vectori/vectori.cpp` rescris. Commit-urile `3c1d221 sortare binara` → `589651f`.
+
+Codul NU a fost modificat — totul e doar aici. Toate constatările sunt **verificate prin compilare și rulare** (`g++ -std=c++17 -Wall -Wextra`, plus AddressSanitizer și UndefinedBehaviorSanitizer), nu prin citire.
+
+> **Verdictul pe scurt.**
+>
+> Poarta de compilare: ✅ **trece**, fără niciun warning cu `-Wall -Wextra`. Sortarea pe care ai scris-o e **corectă**, inclusiv pe negative și dublete (verificat: `{5,-3,5,0,-3,12,1}` → `-3 -3 0 1 5 5 12`). Căutarea binară dă răspunsul corect pe datele din `verificare()`.
+>
+> Dar sunt două probleme, și amândouă sunt **aceeași greșeală de metodă**, nu de C++:
+>
+> 1. **`sup = dim` în loc de `dim - 1`** (B1). Pe datele tale nu se vede. Pe un vector dimensionat exact, AddressSanitizer oprește programul cu `stack-buffer-overflow` la `cautareBinara.h:42`. Pe un vector cu negative, funcția îți întoarce **poziția 3 într-un vector de 3 elemente**.
+> 2. **Ai scris sortarea și n-ai chemat-o niciodată** (B2). `verificare()` caută direct într-un vector care era **deja sortat când l-ai scris tu de mână**. Demo-ul „merge" fără să demonstreze nimic. Pe un vector nesortat, căutarea răspunde `-1` pentru un element care **există în vector**.
+>
+> Și partea grea: **niciunul dintre cele 6 🔴 din runda 6 nu e închis.** B1, B2, B3, B4, B5, B6 — toate neatinse, verificate în cod acum. Cinci dintre ele erau sub un minut fiecare. Ai deschis un subiect nou peste unul rămas deschis.
+
+---
+
+## Starea rundei 6 (verificată în cod pe `589651f`)
+
+| # | unde | starea |
+|---|---|---|
+| B1 | `tema6.h:328` — paritate pe negative | 🔴 **NEATINS** — încă `v[j] % 2 != v[j+1] % 2` |
+| B2 | `tema6.h:95` — zeroul pierdut la dublete | 🔴 **NEATINS** — încă `for (int i = 1; ...)` |
+| B3 | `tema5.h:101` — #522, alt algoritm | 🔴 **NEATINS** |
+| B4 | `tema5.h:110` — #522, garda inversată (buffer overflow) | 🔴 **NEATINS** — încă `while (v[i] == v[j] && j < d)` |
+| B5 | `tema5.h:606` — #4148, `ct++` în loc de `ct = 1` | 🔴 **NEATINS** |
+| B6 | `tema5.h:755` — #297 nu afișează nimic | 🔴 **NEATINS** — funcția tot n-are `cout` |
+| M2a | `% 2 == 1` pe negative | 🟡 **NEATINS** — încă în `MunteVale.h:145`, `realizareaUnuiNouVector.h:644`, `tema5.h:506` |
+
+Singura modificare din runda trecută: `tema6.h:346` — ai spart afișarea pe două rânduri (`endl` + `lungime = `). Cosmetic, corect, dar nu era pe listă.
+
+---
+
+# 🔴 Critice
+
+## B1 — `sup = dim` citește în afara vectorului
+
+`vectori/cautareBinara.h:38`
+
+**CUM E ACUM.** Pe un vector dimensionat exact, programul **moare**:
+
+```
+int v[8] = { 2,9,13,16,18,21,33,49 };
+cautareaBinara(v, 8, 100);
+
+==43079==ERROR: AddressSanitizer: stack-buffer-overflow
+READ of size 4 at 0x00016b80e9e0
+    #0 cautareaBinara(int*, int, int) cautareBinara.h:42
+    'v' (line 4) <== Memory access at offset 64 overflows this variable
+```
+
+Și pe un vector cu negative îți întoarce o poziție care nu există:
+
+```
+int a[100] = { -5,-3,-2 };
+cautareaBinara(a, 3, 0)  ->  3        // dim = 3, deci pozițiile valide sunt 0,1,2
+```
+
+**DE CE.** `inf` și `sup` nu sunt „început și sfârșit" în sensul din vorbire — sunt **indici**, iar `dim` e un **număr de elemente**. Într-un vector cu 8 elemente indicii merg de la `0` la `7`. Punând `sup = 8` îi spui buclei că `v[8]` e un element de căutat, deși el e primul din afara vectorului.
+
+Bucla poate ajunge chiar acolo: dacă cheia e mai mare decât toate elementele, `inf` urcă până la `dim`, iar `mij = (dim + dim) / 2 = dim`. La linia `:42` citești `v[dim]`.
+
+Atunci de ce ție îți merge? Pentru că ai scris `int v[100]` cu doar 8 valori (`:57`). Restul de 92 de poziții sunt **zerouri puse automat de compilator** — memorie validă, care îți aparține. Citirea nu crapă, doar minte. Cu `int v[8]` — dimensiunea reală — sanitizer-ul o vede imediat. **Vectorul supradimensionat nu ți-a rezolvat bug-ul, ți l-a ascuns.** Vezi și C2.
+
+**Cazul cu negative arată de ce contează chiar și cu `v[100]`:** cheia `0` e mai mare decât `-5, -3, -2`, `inf` urcă la 3, `v[3]` e unul dintre zerourile din coadă, `0 == 0` → funcția raportează „găsit pe poziția 3". Nu e o citire ilegală, e un **răspuns greșit**.
+
+**Bonus, aceeași cauză:** cu `sup = dim`, pe un vector gol (`dim = 0`) ai `inf = 0 <= sup = 0` → intri în buclă și citești `v[0]` dintr-un vector care n-are niciun element. Cu `sup = dim - 1 = -1`, `0 <= -1` e fals și bucla nu pornește deloc. Aceeași literă rezolvă și cazul-limită, gratis.
+
+**FIX:** `int sup = dim - 1;`
+
+---
+
+## B2 — Ai scris sortarea și n-ai chemat-o niciodată
+
+`vectori/cautareBinara.h:56-67` (`sortareaPrinSelectie` definită la `:14`, apelată: nicăieri)
+
+**CUM E ACUM.** Ai scris de două ori în fișier, cu mâna ta, că vectorul trebuie sortat:
+
+```
+:6   //Obs cautarea binara se face tot timpul pe un vector sortat
+:28  //Obs ve sa fie sortat crescator primna oara
+```
+
+Și ai scris funcția care face exact asta. Dar `verificare()` sare peste ea:
+
+```
+int v[100] = { 2,9,13,16,18,21,33,49 };   // deja sortat, l-ai scris tu așa
+int poz = cautareaBinara(v, d, key);       // sortarea nu apare aici
+```
+
+Programul afișează `elementul 21 a fost gasit pe pozitia 5`. Corect. Dar ar fi afișat același lucru și dacă `sortareaPrinSelectie` ar fi fost goală pe dinăuntru. Rulare cu **același** vector, doar amestecat:
+
+```
+int c[100] = { 49,2,33,9,21,13,16,18 };
+fara sortare:  cautareaBinara(c, 8, 49) = -1      // 49 e pe pozitia 0, in vector!
+cu sortare:    2 9 13 16 18 21 33 49  ->  49 gasit pe pozitia 7
+```
+
+**DE CE.** Căutarea binară nu „caută" — ea **elimină**. Din `v[mij] > key` trage concluzia *„atunci key nu poate fi în dreapta"* și aruncă jumătate de vector fără să se uite la ea. Concluzia aia e valabilă **numai** dacă vectorul e crescător; e singura informație pe care se sprijină algoritmul. Pe un vector nesortat, `v[mij] > key` nu-ți spune absolut nimic despre unde e `key`, iar tăietura aruncă exact jumătatea în care se afla — de-aia primești `-1` pentru un element care există.
+
+Sortarea nu e „un pas în plus, dacă vrei". Ea e **precondiția** fără de care funcția n-are voie să fie chemată. Un demo care o omite nu testează căutarea binară, testează dacă ai avut noroc la scrierea datelor.
+
+Și e exact tiparul semnalat în runda trecută, în altă formă: **funcție scrisă, neconectată, output plauzibil.** Atunci era #297 (calcula corect, nu afișa nimic). Acum e sortarea (corectă, neapelată). În ambele cazuri programul rulează fără eroare și tu n-ai cum să vezi că lipsește ceva — pentru că *lipsa* nu produce mesaj.
+
+**FIX:** `sortareaPrinSelectie(v, d);` înainte de `cautareaBinara(v, d, key)`, și **verifică pe un vector nesortat** — altfel apelul nu demonstrează nimic nici el.
+
+---
+
+# 🟡 Importante
+
+**M1 — `sortareaPrinSelectie` nu e sortare prin selecție.** `cautareBinara.h:14-26`. Ce ai scris e **sortare prin interschimbare**: compari `v[i]` cu fiecare `v[j]` de după el și schimbi pe loc, de fiecare dată când găsești ceva mai mic. Rezultatul e corect (verificat pe negative și dublete), dar sortarea prin selecție face altceva: parcurge restul vectorului doar ca să **rețină indicele minimului** (`imin`), și face **o singură** interschimbare la sfârșitul pasului. Aceleași comparații, dar `n-1` schimbări în loc de până la ~`n²/4`. Merită scrisă și varianta cu `imin` alături — e diferența dintre „am sortat" și „știu ce algoritm am sortat cu".
+
+**M2 — trei `if` unde cazurile se exclud.** `cautareBinara.h:42, 45, 48`. `v[mij]` e ori egal, ori mai mare, ori mai mic — a treia oară nu mai are ce afla. După `sup = mij - 1`, testul `if (v[mij] < key)` se evaluează degeaba (nu strică, `v[mij]` nu s-a schimbat). Scris cu `else if` / `else`, codul spune *„sunt exact trei cazuri"* — ceea ce e chiar ideea algoritmului.
+
+**M3 — cu dublete, poziția returnată e arbitrară.** `cautareBinara.h:36`. Pe `{2,5,5,5,9}` cu `key = 5` primești poziția la care s-a nimerit `mij`, nu prima apariție. Nu e greșit față de cerință, dar e bine să știi că „prima apariție" cere o variantă separată (continui spre stânga în loc să te oprești la primul `==`).
+
+**M4 — 6 🔴 din runda 6 sunt încă deschise.** Vezi tabelul de mai sus. Cinci sunt sub un minut fiecare, cu before/after gata scris în `reviews/CODE_REVIEW_TEMA6.md`.
+
+---
+
+# 🟢 Cleanups
+
+**C1 — `#include <cmath>` (`:3`) nu e folosit.** Nicio funcție matematică în fișier.
+
+**C2 — `int v[100]` cu `d = 8`** (`:57`). E cauza pentru care B1 nu s-a văzut: cele 92 de zerouri din coadă absorb citirea din afara vectorului. Declară `int v[8]` când ai 8 valori — vrei ca greșeala să crape, nu să tacă.
+
+**C3 — `(inf + sup) / 2`** (`:41`). La dimensiunile tale e perfect în regulă. De știut pentru mai târziu: pe vectori foarte mari `inf + sup` poate depăși `int`, și varianta care nu depășește niciodată e `inf + (sup - inf) / 2`. Nu schimba acum, doar reține.
+
+**C4 — tabelul de urmărire e început și abandonat.** `:34-35` — ai antetul cu 7 coloane și **un singur rând** completat (`0<8 da   4   18==21 false ...`), apoi liniuțe. În runda trecută ți-am lăudat exact instrumentul ăsta (`tema5.h:95-100`). Dacă îl duceai până la capăt aici, pe `key = 100`, vedeai singur cum `inf` urcă la 8 și `mij` ajunge la 8 — adică B1, fără compilator, fără sanitizer. Și comentariile goale de la `:9-12` pot dispărea.
+
+**C5 — typo-uri în comentarii:** `:28` „ve sa fie sortat crescator primna oara" → „vectorul să fie sortat crescător prima oară". Comentariul e util, merită să fie și citibil.
+
+---
+
+# Before / After (în document, NU aplicat în cod)
+
+### B1 — `cautareBinara.h:38`
+
+| acum | corect |
+|---|---|
+| <pre>int inf = 0;<br>int sup = dim;</pre> | <pre>int inf = 0;<br>int sup = dim - 1;</pre> |
+
+### B2 — `cautareBinara.h:56-61`
+
+| acum | corect |
+|---|---|
+| <pre>void verificare() {<br>  int v[8] = { 2,9,13,16,18,21,33,49 };<br>  int d = 8;<br>  int key = 21;<br><br>  int poz = cautareaBinara(v, d, key);</pre> | <pre>void verificare() {<br>  int v[8] = { 49,2,33,9,21,13,16,18 };<br>  int d = 8;<br>  int key = 21;<br><br>  sortareaPrinSelectie(v, d);<br>  int poz = cautareaBinara(v, d, key);</pre> |
+
+Observă că am schimbat **și datele**, nu doar apelul. Cu vectorul deja sortat, apelul la sortare rămâne o linie despre care nu poți spune dacă face ceva.
+
+### M1 — `cautareBinara.h:14-26` (sortare prin selecție, cea adevărată)
+
+| acum (interschimbare) | selecție |
+|---|---|
+| <pre>for (int i = 0; i &lt; d; i++)<br>  for (int j = i+1; j &lt; d; j++)<br>    if (v[i] &gt; v[j]) {<br>      int aux = v[i];<br>      v[i] = v[j];<br>      v[j] = aux;<br>    }</pre> | <pre>for (int i = 0; i &lt; d - 1; i++) {<br>  int imin = i;<br>  for (int j = i+1; j &lt; d; j++)<br>    if (v[j] &lt; v[imin])<br>      imin = j;<br>  if (imin != i) {<br>    int aux = v[i];<br>    v[i] = v[imin];<br>    v[imin] = aux;<br>  }<br>}</pre> |
+
+---
+
+# Q&A — verifică-ți înțelegerea
+
+**1.** Pe `int v[100] = { 2,9,13,16,18,21,33,49 }` cu `d = 8`, caută `key = 100` și urmărește **pe hârtie**, în tabelul pe care l-ai început la `:34`, valorile `inf`, `sup`, `mij` până la ieșirea din buclă. La ce valoare ajunge `mij` la ultimul pas, și ce conține `v[mij]` acolo? Apoi: de ce **același** cod, cu `int v[8]` în loc de `int v[100]`, oprește programul cu eroare?
+
+**2.** Ai schimbat `sup = dim` în `sup = dim - 1`. Explică, fără să rulezi, de ce modificarea asta rezolvă și cazul `dim = 0` (vector gol) — ce valoare are `sup`, și de ce nu se mai intră deloc în `while`.
+
+**3.** Pe `{49,2,33,9,21,13,16,18}` (nesortat), `cautareaBinara(c, 8, 49)` întoarce `-1`, deși `49` e chiar pe poziția 0. Urmărește cei 3-4 pași și spune **exact la ce pas** algoritmul aruncă jumătatea în care se afla `49`. Legat de asta: care e singura afirmație pe care se sprijină linia `if (v[mij] > key) sup = mij - 1;`, și de ce ea devine falsă pe un vector nesortat?
+
+---
+
+# Ce a mers
+
+Verificate prin rulare, nu umplutură:
+
+- **Compilare curată cu `-Wall -Wextra`: zero warning-uri.** Al doilea fișier din proiect care reușește asta, după `tema6.h`.
+- **Sortarea e corectă**, inclusiv pe cazurile care de obicei rup implementările de începător: negative și dublete simultan. `{5,-3,5,0,-3,12,1}` → `-3 -3 0 1 5 5 12`.
+- **Structura căutării binare e corectă.** `mij` recalculat în buclă, `sup = mij - 1` / `inf = mij + 1` (nu `= mij`, greșeala clasică ce dă buclă infinită), `return -1` pe eșec. Scheletul e bun — bug-ul e într-o singură literă, nu în algoritm.
+- **Ai scris invariantul înainte de cod** (`:6`). Ai știut de la început de ce depinde algoritmul. B2 nu e o problemă de înțelegere, e una de a nu fi dus firul până la capăt în `verificare()`.
+
+**Următorul pas, în ordinea asta:** B1 (`- 1`, 5 secunde) → B2 (o linie + amestecă datele, 30 de secunde) → apoi **înapoi la runda 6**: B4, B5, B2, B1, B6, și la final B3. Nu deschide subiect nou până nu golești lista.
+
+---
 # Code Review — victor-vectori · runda 6: fix-urile din rundele 4+5
 
 Review pe `232335c` → `98e9ad3` (commit-urile „code review 1st…4th push"). Codul NU a fost modificat — totul e doar aici. Toate constatările de mai jos au fost **verificate prin compilare și rulare**, cu AddressSanitizer pentru accesele în afara vectorului.
