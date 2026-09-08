@@ -5,11 +5,6 @@ using namespace std;
 
 //Obs cautarea binara se face tot timpul pe un vector sortat
 
-
-//
-
-
-
 //   4<4 nu                          
 void sortareaPrinSelectie(int v[], int d) {
 
@@ -32,7 +27,14 @@ void sortareaPrinSelectie(int v[], int d) {
 // v[100] = { 2,9,13,16,18,21,33,49 };     d = 8;     key = 21;
 
 //  inf<=sup   mij   v[mij]==key     v[mij]>key     v[mij]<key       inf       sup 
-//   0<8 da     4    18==21 false     18>21 false    18<21 true       -         -
+//   0<8 da     4    18==21 false     18>21 false    18<21 true       5         -
+//   5<=8da     6    33==21 false     33>21 true     33<21 false      -         5
+//   5<=5 da    5    21==21 true       -                -             -         -
+
+
+//int v[100] = { 5,10,14,16,19,21,26 };
+//int d = 8;
+//int key = 20;
 int cautareaBinara(int v[], int dim, int key) {
 	int inf = 0;
 	int sup = dim;
@@ -54,9 +56,9 @@ int cautareaBinara(int v[], int dim, int key) {
 }
 
 void verificare() {
-	int v[100] = { 2,9,13,16,18,21,33,49 };
-	int d = 8;
-	int key = 21;
+	int v[100] = { 5,10,14,16,19,21,26 };
+	int d = 6;
+	int key = 20;
 	int poz = cautareaBinara(v, d, key);
 
 	if (poz != -1) {
