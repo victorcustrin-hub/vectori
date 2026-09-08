@@ -6,11 +6,252 @@ Un singur fișier, runda cea mai nouă sus. Rundele vechi rămân dedesubt.
 
 | rundă | subiect | fișier | stare |
 |---|---|---|---|
-| 7 | `cautareBinara.h` | *(aici, mai jos)* | 2 🔴 deschise |
-| 6 | `tema6.h` + fix-uri tema5/bac | `CODE_REVIEW_TEMA6.md` | 🔴 B1–B6 **toate deschise**, 🟡 M2a deschis |
+| 8 | fix-uri `tema6.h` + `cautareBinara.h` | *(aici, mai jos)* | 2 ✅ închise · 6 🔴 deschise |
+| 7 | `cautareBinara.h` | *(mai jos)* | 🔴 B1 + B2 **deschise** |
+| 6 | `tema6.h` + fix-uri tema5/bac | `CODE_REVIEW_TEMA6.md` | ✅ B1, B2 închise · 🔴 B3–B6 deschise · 🟡 M2a deschis |
 | 5 | tema5 + bac 2026 | `CODE_REVIEW_TEMA5_BAC.md` | preluate în runda 6 |
 | 4 | `secvente.h` | `CODE_REVIEW_SECVENTE.md` | ✅ închis |
 | 1–3 | vectori (fix-uri runde 4+5) | *(mai jos, sub runda 7)* | ✅ închise |
+
+---
+
+# Runda 8 — 2026-09-08 — sha `e3502f0`
+
+Commit `e3502f0 finish code review critical`. Fișiere atinse: `tema6.h`, `cautareBinara.h`, `vectori.cpp`.
+
+Codul NU a fost modificat — totul e doar aici. Verificat prin compilare și rulare (`g++ -std=c++17 -Wall -Wextra`, AddressSanitizer + UndefinedBehaviorSanitizer).
+
+> **Verdictul pe scurt.**
+>
+> **Cele două 🔴 pe care le-ai atacat sunt închise corect, amândouă.** B1 (paritate pe negative) și B2 (zeroul la dublete) din runda 6 — verificate prin rulare, cu date noi *și* cu datele vechi, ca să văd că n-ai stricat nimic. Zero regresii, zero erori de sanitizer.
+>
+> Și ceva ce nu s-a mai întâmplat: **ți-ai schimbat datele de test ca să lovească exact bug-ul.** `{42,17,8,42,17,91,17}` → `{0,5,0,7}`. `{4,6,3,8,5,12,7,9,2}` → `{-3,5,-7,9}`. În fișa ta scrie de patru runde „datele lui de test camuflează bug-urile". Runda asta e prima în care datele **demonstrează** fix-ul. E cea mai importantă linie din review.
+>
+> Ce n-a mers:
+>
+> 1. **Cele două 🔴 din runda 7 sunt neatinse** — `sup = dim` (B1) și sortarea neapelată (B2). Ai umblat prin `cautareBinara.h`, ai completat tabelul, ai șters comentariile goale, ai schimbat datele — și ai trecut pe lângă exact cele două linii care erau constatările.
+> 2. **`vectori.cpp` nu mai cheamă `verificare()`.** Acum include `tema6.h` și cheamă `solutie3()`. Căutarea binară nu mai e nici măcar compilată — cele două bug-uri nu se mai pot vedea la rulare, indiferent cât ai rula.
+> 3. **B1 e reparat într-un loc din trei.** Aceeași funcție, literă cu literă, mai există la `tema5.h:683` și `tema5.h:724`, cu `%` neprotejat. Vezi M1 — e „repară linia, nu regula", exact tiparul pe care îl închideai.
+> 4. **B3, B4, B5, B6 din runda 6** (toate în `tema5.h`) — tot neatinse. Sunt deschise de trei runde.
+
+---
+
+## Starea constatărilor deschise
+
+| # | rundă | unde | starea |
+|---|---|---|---|
+| B1 | 6 | `tema6.h:329` paritate pe negative | ✅ **ÎNCHIS** — `abs(v[j] % 2)`, corect, verificat pe 3 seturi |
+| B2 | 6 | `tema6.h:96` zeroul pierdut | ✅ **ÎNCHIS** — `i = 0` + `const int valoareMax` |
+| B3 | 6 | `tema5.h:101` #522, alt algoritm | 🔴 neatins |
+| B4 | 6 | `tema5.h:110` #522, garda inversată | 🔴 neatins |
+| B5 | 6 | `tema5.h:606` #4148, `ct++` în loc de `ct = 1` | 🔴 neatins |
+| B6 | 6 | `tema5.h:755` #297 fără `cout` | 🔴 neatins |
+| B1 | 7 | `cautareBinara.h:40` `sup = dim` | 🔴 neatins — OOB reconfirmat pe datele NOI |
+| B2 | 7 | `cautareBinara.h:58` sortarea neapelată | 🔴 neatins |
+| C4 | 7 | tabelul de urmărire abandonat | ✅ **completat** — dar pe cazul care merge, vezi M3 |
+| C5 | 7 | comentarii goale `:9-12` | ✅ șterse |
+
+---
+
+# ✅ Ce ai închis — și de ce contează
+
+## B1 (runda 6) — paritatea pe negative
+
+`tema6.h:329` — `abs(v[j] % 2) != abs(v[j + 1] % 2)`
+
+Corect. Rulat:
+
+```
+v={-3,5,-7,9}   (toate impare)      -> secventa = -3        lungime = 1     ✅
+v={-3,4,-7,8,-9} (alterneaza)       -> secventa = -3 4 -7 8 -9  lungime = 5 ✅
+v={4,6,3,8,5,12,7,9,2} (testul vechi) -> secventa = 6 3 8 5 12 7  lungime = 6 ✅
+```
+
+Al treilea e important: **datele vechi dau același răspuns ca înainte.** Ăsta e testul pe care nu-l făceai — de două ori un „fix" ți-a rupt cod care mergea.
+
+`abs(x % 2)` funcționează pentru că `%` în C++ păstrează semnul deîmpărțitului: `-3 % 2` dă `-1`, nu `1`. `abs` îl aduce la `1` și atunci `0` = par / `1` = impar, indiferent de semn.
+
+Varianta care se transferă mai bine — de reținut, nu de schimbat acum — e să compari **răspunsuri de tip da/nu**, nu resturi: `(v[j] % 2 != 0) != (v[j+1] % 2 != 0)`. `v[j] % 2 != 0` e deja „e impar?", iar la întrebări de tip da/nu semnul nu mai are cum să intre în discuție. E aceeași idee ca la M2a (`n % 2 == 1` → `n % 2 != 0`): **întreabă „e impar?", nu „restul e 1?"**.
+
+## B2 (runda 6) — zeroul pierdut la dublete
+
+`tema6.h:87-96`
+
+```
+v={0,5,0,7}                  -> cel mai mic numar repetat = 0, apare de 2 ori   ✅
+v={42,17,8,42,17,91,17}      -> cel mai mic numar repetat = 17, apare de 3 ori  ✅
+v={1,2,3}                    -> Nu exista dublete                                ✅
+```
+
+Ai făcut mai mult decât ceream: `const int valoareMax = 100` folosit **și** la declarația lui `f`, **și** la limita buclei. Înainte aveai `101` scris o dată și `100` scris altundeva — două numere care trebuiau să rămână în pas, fără nimic care să le lege. Acum e o singură sursă. Dacă mâine valorile urcă la 1000, schimbi o linie, nu două care se pot desincroniza.
+
+---
+
+# 🔴 Critice (neatinse din runda 7)
+
+## B1 — `sup = dim` — reconfirmat pe datele tale NOI
+
+`vectori/cautareBinara.h:40`
+
+Ai schimbat vectorul de test, dar bug-ul e în funcție, nu în date. Cu dimensiunea reală (`int v[7]`, fiindcă ai 7 elemente):
+
+```
+int v[7] = { 5,10,14,16,19,21,26 };
+cautareaBinara(v, 7, 30);
+
+==49479==ERROR: AddressSanitizer: stack-buffer-overflow
+READ of size 4
+    #0 cautareaBinara(int*, int, int) cautareBinara.h:44
+    'v' (line 4) <== Memory access at offset 60 overflows this variable
+```
+
+Și răspunsul greșit fără crash, cu negative:
+
+```
+int a[100] = { -9,-4,-1 };
+cautareaBinara(a, 3, 0) = 3        // dim = 3, pozitiile valide sunt 0, 1, 2
+```
+
+**DE CE (a doua oară, altfel).** `dim` răspunde la întrebarea *„câte elemente sunt?"*. `sup` răspunde la *„care e ultimul indice?"*. Sunt două întrebări diferite și au răspunsuri diferite: 7 elemente înseamnă ultimul indice 6. Scriind `sup = dim` amesteci un **număr de bucăți** cu o **poziție**.
+
+Bucla se sprijină pe promisiunea *„orice indice între `inf` și `sup` e citibil"*. Promisiunea aia e ruptă din prima linie: `v[7]` nu e al tău. Când cheia e mai mare decât toate elementele, `inf` urcă exact până la `dim` și `mij = (dim + dim) / 2 = dim` — atunci se citește.
+
+E aceeași familie cu B4 din runda 6 (`while (v[i] == v[j] && j < d)`, unde citești `v[j]` *înainte* să verifici că `j` e valid). În ambele cazuri codul întreabă întâi și verifică pe urmă. **FIX:** `int sup = dim - 1;`
+
+## B2 — sortarea tot nu e apelată
+
+`vectori/cautareBinara.h:58-62` (`sortareaPrinSelectie` definită la `:9`, apelată: nicăieri)
+
+Ai schimbat datele din `{2,9,13,16,18,21,33,49}` în `{5,10,14,16,19,21,26}`. Le-ai scris tot **sortate de mână**. Deci demo-ul spune exact ce spunea și înainte: nimic despre sortare.
+
+```
+int c[100] = { 26,5,21,10,19,14,16 };   // aceleasi 7 valori, amestecate
+cautareaBinara(c, 7, 26) = -1            // 26 e pe pozitia 0, in vector
+```
+
+**DE CE (partea pe care n-am spus-o runda trecută).** Sortarea nu e „încă un pas". Ea e **contractul** funcției: `cautareaBinara` are voie să arunce jumătate de vector fără s-o citească *pentru că* i s-a promis ceva despre ordine. Cine cheamă funcția e cel care trebuie să onoreze promisiunea. `verificare()` o cheamă fără s-o onoreze — și scapă doar fiindcă tu, ca om, ai scris datele deja în ordine.
+
+Un test care nu poate să pice nu e test. Vectorul sortat de mână face ca apelul la sortare să fie invizibil: îl pui, îl scoți, ieșirea e aceeași. Ca să însemne ceva, **datele trebuie să fie nesortate**.
+
+**FIX:** `sortareaPrinSelectie(v, d);` înainte de apel, **și** date amestecate în `verificare()`.
+
+---
+
+# 🟡 Importante
+
+## M1 — B1 e reparat într-un loc din trei
+
+`tema5.h:683` și `tema5.h:724` — ambele conțin, literă cu literă:
+
+```cpp
+while (j + 1 < d && (v[j] % 2 != v[j + 1] % 2)) {
+```
+
+Sunt **aceeași funcție**, copiată de trei ori: `ceaMaiLungaSecventaParitatiDiferite` (#283, `tema5.h:677`), `secventaParitatiDiferite` (#4457, `tema5.h:717`) și cea din `tema6.h:321`. Ai reparat-o pe a treia.
+
+Corectitudinea: cerințele de la #283 și #4457 zic **„numere naturale"**, deci pe datele valide `%` nu se rupe acolo. Nu e bug pe cerință — de-aia e 🟡, nu 🔴. Dar:
+
+Ăsta e tiparul care ți se repetă de patru runde: **repari apariția semnalată, nu regula.** Runda trecută am scris că tiparul „s-a redus, dar n-a dispărut". Aici e din nou, în forma lui cea mai curată: aceeași linie, în trei fișiere, una singură atinsă.
+
+Contramăsura e mecanică, 20 de secunde: după fiecare fix, **`Ctrl+Shift+F` pe fragmentul pe care tocmai l-ai schimbat** (aici: `% 2 !=`). Dacă apare în alte locuri, decizi conștient dacă le atingi sau nu — dar decizi, nu ratezi.
+
+Aceeași verificare mai scoate la iveală (aceeași familie, prioritate mică): `corectareTema2.h:112` și `tema2.h:552` compară `v[i] % 2 == v[i-1] % 2`, iar M2a e tot deschis — `n % 2 == 1` în `MunteVale.h:145`, `realizareaUnuiNouVector.h:644`, `tema5.h:506`.
+
+## M2 — `vectori.cpp` a lăsat căutarea binară în urmă
+
+`vectori/vectori.cpp:2,6` — acum `#include "tema6.h"` + `solutie3()`.
+
+`cautareBinara.h` nu mai intră deloc în build. Cele două 🔴 de mai sus nu se mai pot manifesta la rulare — nu pentru că le-ai rezolvat, ci pentru că fișierul nu mai e compilat.
+
+E o versiune nouă a tiparului tău: **nu doar scrii funcții pe care nu le conectezi — muți `main()` mai departe și lași bug-ul în urmă, în afara razei de acțiune.** Cât `main()` cheamă un singur `solutieXXX()`, tot ce nu e chemat e cod pe care nu-l mai verifică nimeni.
+
+Sugestia (o singură linie de disciplină, nu refactor): ține în `main()` un apel la **fiecare** `verificare()` / `solutieXXX()` din fișierul la care lucrezi, comentează-le pe cele vechi doar când fișierul e închis, și rulează o dată tot blocul înainte de commit.
+
+## M3 — tabelul de urmărire, completat pe cazul care merge
+
+`cautareBinara.h:29-32`
+
+Ai completat tabelul de la C4 (runda 7) — bine, și e vizibil corect: `inf` urcă la 5, `mij` ajunge la 5, `21 == 21`, gata în 3 pași.
+
+Dar l-ai completat pe **`key = 21`, cheia care se găsește**. Întrebarea 1 din Q&A-ul rundei 7 cerea explicit `key = 100` — cheia mai mare decât toate. Pe aceea, tabelul ar fi arătat `inf` urcând la 8 și `mij` ajungând la 8, adică B1, desenat de mâna ta, fără compilator.
+
+Regula generală, și e utilă mult dincolo de aici: **un tabel de urmărire pe cazul care merge nu-ți spune nimic.** Instrumentul ăsta e bun exact pe cazurile-limită — cheia lipsă, cheia mai mare decât toate, vectorul gol, un singur element.
+
+## M4 — `f[v[i]]++` nu are gardă
+
+`tema6.h:91`
+
+`const int valoareMax = 100` **documentează** presupunerea, dar n-o **impune**. Rulat:
+
+```
+v={250, 5, 250}  ->  "Nu exista dublete"       // 250 apare de doua ori
+```
+
+`f[250]` scrie în afara vectorului `f` (101 elemente); numărătoarea se pierde undeva în memorie și răspunsul iese fals, fără nicio eroare. Sanitizer-ul nu l-a prins aici — motiv în plus să nu te bazezi pe el.
+
+O linie: `if (v[i] >= 0 && v[i] <= valoareMax) f[v[i]]++;` — sau, dacă cerința chiar garantează `0..100`, măcar știi conștient că te sprijini pe garanția aia.
+
+---
+
+# 🟢 Cleanups
+
+**C1 — `#include <cmath>` în `cautareBinara.h:3`** — încă nefolosit acolo (`abs` îl folosești în `tema6.h`, care are propriul `#include`).
+
+**C2 — comentariul contrazice codul.** `cautareBinara.h:36` zice `//int d = 8;`, iar `:60` are `int d = 7;`. Vectorul are 7 valori, deci codul are dreptate. Un comentariu care minte e mai rău decât niciun comentariu — șterge-l sau pune-l în pas.
+
+**C3 — `int v[100]` cu `d = 7`** (`:59`). Al doilea review la rând: dimensionează vectorul de test la dimensiunea reală. E singurul motiv pentru care B1 nu-ți crapă în față.
+
+---
+
+# Before / After (în document, NU aplicat în cod)
+
+### B1 (runda 7) — `cautareBinara.h:40`
+
+| acum | corect |
+|---|---|
+| <pre>int inf = 0;<br>int sup = dim;</pre> | <pre>int inf = 0;<br>int sup = dim - 1;</pre> |
+
+### B2 (runda 7) — `cautareBinara.h:58-62`
+
+| acum | corect |
+|---|---|
+| <pre>void verificare() {<br>  int v[100] = { 5,10,14,16,19,21,26 };<br>  int d = 7;<br>  int key = 20;<br>  int poz = cautareaBinara(v, d, key);</pre> | <pre>void verificare() {<br>  int v[7] = { 26,5,21,10,19,14,16 };<br>  int d = 7;<br>  int key = 26;<br><br>  sortareaPrinSelectie(v, d);<br>  int poz = cautareaBinara(v, d, key);</pre> |
+
+Trei schimbări, nu una: apelul la sortare, **datele amestecate** (altfel apelul nu se vede) și `int v[7]` în loc de `int v[100]` (altfel B1 rămâne ascuns).
+
+### M1 — `tema5.h:683` și `tema5.h:724`
+
+| acum | ca în `tema6.h` |
+|---|---|
+| <pre>while (j + 1 &lt; d &&<br>  (v[j] % 2 != v[j+1] % 2)) {</pre> | <pre>while (j + 1 &lt; d &&<br>  (abs(v[j] % 2) != abs(v[j+1] % 2))) {</pre> |
+
+---
+
+# Q&A — verifică-ți înțelegerea
+
+**1.** Ai reparat paritatea în `tema6.h` și ai lăsat neatinse `tema5.h:683` și `tema5.h:724`, care conțin **exact aceeași linie**. Fără să deschizi fișierele: ce comandă din Visual Studio ți-ar fi arătat, în 10 secunde, că mai există două copii? Și de ce nu e suficient să-ți aduci aminte că „am mai scris funcția asta undeva"?
+
+**2.** În `verificare()` ai schimbat datele din `{2,9,13,16,18,21,33,49}` în `{5,10,14,16,19,21,26}`. Amândouă sunt sortate. Dacă ai șterge complet corpul lui `sortareaPrinSelectie` (funcție goală, care nu face nimic), s-ar schimba **vreun** rezultat afișat de `main()`? Răspunde cu da/nu și explică — apoi spune ce fel de date de test ar face răspunsul să fie „da".
+
+**3.** La B2 din runda 6 ai făcut fix ce trebuia: ai schimbat `i = 1` în `i = 0` **și** ai schimbat datele în `{0,5,0,7}` ca să lovești chiar cazul reparat. Aplică același raționament la B1 din runda 7: după ce pui `sup = dim - 1`, ce **cheie** și ce **dimensiune de vector** trebuie să alegi în `verificare()` ca să demonstrezi că modificarea chiar a rezolvat ceva? (Indiciu: pe `key = 20` din codul actual, și varianta greșită, și cea corectă afișează același lucru.)
+
+---
+
+# Ce a mers
+
+- **2 din 2 constatări atacate, 2 închise corect** — și amândouă verificate de mine prin rulare, inclusiv pe datele vechi, ca să confirm că n-ai stricat nimic. Prima rundă fără nicio regresie.
+- **Ți-ai ales datele de test ca să lovească bug-ul.** `{0,5,0,7}` pentru zeroul pierdut, `{-3,5,-7,9}` pentru negative. Asta e schimbarea reală din runda asta. „Datele lui de test camuflează bug-uri" era observația care ți se repeta de patru runde — aici ai făcut opusul, de două ori, conștient.
+- **`const int valoareMax`** — ai mers dincolo de fix și ai legat cele două numere care trebuiau să rămână în pas. Nu ți-o ceruse nimeni.
+- **Ai completat tabelul de urmărire** (C4 din runda 7) — instrumentul e bun, îl folosești; îi mai lipsește doar cazul-limită. Vezi M3.
+- **Compilare curată cu `-Wall -Wextra`**, zero warning-uri, zero erori de sanitizer pe tot `tema6.h`.
+
+**Următorul pas, în ordinea asta:**
+1. `cautareBinara.h:40` → `dim - 1` (5 secunde)
+2. `verificare()` → apel la sortare + date amestecate + `int v[7]` (1 minut)
+3. `Ctrl+Shift+F` pe `% 2 !=` → repară `tema5.h:683` și `:724` (30 de secunde)
+4. **Apoi lista veche din `tema5.h`, deschisă de trei runde:** B4 (garda), B5 (`ct = 1`), B6 (`cout` la #297), B3 (#522, singurul care cere gândit).
+
+Primele trei sunt sub două minute puse cap la cap.
 
 ---
 
