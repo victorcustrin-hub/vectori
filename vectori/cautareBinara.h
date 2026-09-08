@@ -57,7 +57,7 @@ int cautareaBinara(int v[], int dim, int key) {
 
 void verificare() {
 	int v[100] = { 5,10,14,16,19,21,26 };
-	int d = 6;
+	int d = 7;
 	int key = 20;
 	int poz = cautareaBinara(v, d, key);
 

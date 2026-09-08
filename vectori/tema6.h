@@ -84,7 +84,8 @@ void solutie2() {
 
 //3
 void apareDeMinimDouaOri(int v[], int d) {
-    int f[101] = { 0 };
+    const int valoareMax = 100;
+    int f[valoareMax + 1] = { 0 };
 
     for (int i = 0;i < d;i++) {
         f[v[i]]++;
@@ -92,7 +93,7 @@ void apareDeMinimDouaOri(int v[], int d) {
 
     int vf = -1;
 
-    for (int i = 1;i <= 100;i++) {
+    for (int i = 0;i <= valoareMax;i++) {
         if (f[i] >= 2) {
             vf = i;
             break;
@@ -109,8 +110,8 @@ void apareDeMinimDouaOri(int v[], int d) {
 }
 
 void solutie3() {
-    int v[100] = { 42,17,8,42,17,91,17 };
-    int d = 7;
+    int v[100] = { 0,5,0,7 };
+    int d = 4;
 
     apareDeMinimDouaOri(v, d);
 }
@@ -325,7 +326,7 @@ void ceaMaiLungaSecventaParitatiDiferite(int v[], int d) {
     for (int i = 0; i < d; i++) {
         int j = i;
 
-        while (j + 1 < d && (v[j] % 2 != v[j + 1] % 2)) {
+        while (j + 1 < d && (abs(v[j] % 2) != abs(v[j + 1] % 2))) {
             j++;
         }
 
@@ -352,9 +353,13 @@ void ceaMaiLungaSecventaParitatiDiferite(int v[], int d) {
 }
 
 void solutie8() {
-    int v[100] = { 4, 6, 3, 8, 5, 12, 7, 9, 2 };
-    int d = 9;
+    int v[100] = { -3, 5, -7, 9 };
+    int d = 4;
 
     ceaMaiLungaSecventaParitatiDiferite(v, d);
 }
 //
+
+
+
+//CORECTAREA TEMEI
