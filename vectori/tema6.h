@@ -285,9 +285,9 @@ void ceaMaiLungaSecventaElementeDistincte(int v[], int d) {
             j++;
         }
 
-        int d = j - 1;
+        int ultim = j - 1;
 
-        if (d - i > dmax - smax) {
+        if (ultim - i > dmax - smax) {
             smax = i;
             dmax = j - 1;
         }

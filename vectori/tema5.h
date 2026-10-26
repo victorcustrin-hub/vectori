@@ -756,7 +756,7 @@ void determinaSecvSumMax(int v[], int d) {
     int sumaMax = v[0];
     int suma = v[0];
     int smax = 0;
-    int dmax = 0;
+    int dmax = -1;
 
     for (int i = 1; i < d; i++) {
         if (suma < 0) {
